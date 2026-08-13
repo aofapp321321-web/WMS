@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>WMS · คลังม้วนฟิล์ม</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsqr/1.4.0/jsQR.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
+
+:root{
+  --bg:#181b1d;
+  --panel:#232729;
+  --panel-alt:#2c3134;
+  --line:#3a4044;
+  --amber:#f2a93b;
+  --amber-dark:#c9821e;
+  --teal:#3fa796;
+  --warn:#e0b34d;
+  --danger:#d6584a;
+  --text:#ececE7;
+  --dim:#9ba1a5;
+  --radius:10px;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;-webkit-tap-highlight-color:transparent;}
+body{padding-bottom:78px;min-height:100vh;}
+h1,h2,h3{font-family:'Oswald',sans-serif;letter-spacing:.02em;margin:0;}
+.mono{font-family:'IBM Plex Mono',monospace;}
+button{font-family:inherit;cursor:pointer;}
+::selection{background:var(--amber);color:#181b1d;}
+
+/* ---------- header ---------- */
+.topbar{
+  position:sticky;top:0;z-index:20;
+  background:linear-gradient(180deg,#1d2123 0%, #181b1d 100%);
+  border-bottom:2px solid var(--amber);
+  padding:14px 16px 12px;
+}
+.topbar .brand{display:flex;align-items:center;gap:10px;}
+.brand .mark{
+  width:34px;height:34px;border-radius:7px;
+  background:repeating-linear-gradient(45deg,var(--amber),var(--amber) 6px,#181b1d 6px,#181b1d 12px);
+  flex:none;
+}
+.brand h1{font-size:19px;color:var(--text);}
+.brand span{font-size:11px;color:var(--dim);display:block;margin-top:1px;}
+.sync-note{
+  margin-top:8px;font-size:11px;color:var(--amber);
+  background:rgba(242,169,59,.08);border:1px solid rgba(242,169,59,.3);
+  padding:6px 10px;border-radius:6px;
+}
+
+/* ---------- layout ---------- */
+main{padding:16px;max-width:720px;margin:0 auto;}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin-bottom:14px;}
+.panel h2{font-size:15px;color:var(--amber);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.panel h2 .n{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--bg);background:var(--amber);border-radius:4px;padding:1px 6px;}
+
+label{display:block;font-size:12px;color:var(--dim);margin:10px 0 5px;}
+input,select,textarea{
+  width:100%;background:var(--panel-alt);border:1px solid var(--line);border-radius:7px;
+  color:var(--text);padding:10px 11px;font-size:14px;font-family:inherit;
+}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--amber);}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+
+.btn{
+  border:none;border-radius:8px;padding:12px 16px;font-weight:600;font-size:14px;
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;
+  transition:transform .08s ease;
+}
+.btn:active{transform:scale(.98);}
+.btn-primary{background:var(--amber);color:#1a1c1d;}
+.btn-primary:hover{background:#ffb84d;}
+.btn-outline{background:transparent;border:1px solid var(--line);color:var(--text);}
+.btn-outline:hover{border-color:var(--amber);color:var(--amber);}
+.btn-danger{background:transparent;border:1px solid var(--danger);color:var(--danger);}
+.btn-teal{background:var(--teal);color:#0e2320;}
+.btn-sm{padding:7px 10px;font-size:12.5px;width:auto;}
+
+.pill-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px;}
+.pill{
+  border:1px solid var(--line);background:var(--panel-alt);color:var(--dim);
+  border-radius:20px;padding:6px 13px;font-size:12.5px;font-weight:600;
+}
+.pill.active{background:var(--amber);border-color:var(--amber);color:#1a1c1d;}
+
+/* status badges */
+.badge{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:20px;letter-spacing:.03em;}
+.badge-stock{background:rgba(63,167,150,.15);color:var(--teal);border:1px solid rgba(63,167,150,.4);}
+.badge-issued{background:rgba(155,161,165,.15);color:var(--dim);border:1px solid var(--line);}
+.badge-warn{background:rgba(224,179,77,.15);color:var(--warn);border:1px solid rgba(224,179,77,.4);}
+.badge-danger{background:rgba(214,88,74,.15);color:var(--danger);border:1px solid rgba(214,88,74,.4);}
+
+/* roll card */
+.roll-card{
+  background:var(--panel-alt);border:1px solid var(--line);border-radius:9px;
+  padding:12px 13px;margin-bottom:9px;
+}
+.roll-card .top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;}
+.roll-card .pid{font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:600;color:var(--text);}
+.roll-card .meta{font-size:12px;color:var(--dim);margin-top:4px;line-height:1.6;}
+.roll-card .loc{
+  font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--amber);
+  background:rgba(242,169,59,.1);border:1px solid rgba(242,169,59,.3);
+  padding:3px 9px;border-radius:6px;white-space:nowrap;
+}
+.roll-card .actions{display:flex;gap:8px;margin-top:10px;}
+
+.empty{text-align:center;padding:38px 14px;color:var(--dim);}
+.empty .big{font-size:32px;margin-bottom:8px;}
+.empty p{font-size:13px;margin:4px 0;}
+
+/* location grid */
+.zone-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(58px,1fr));gap:6px;}
+.cell{
+  aspect-ratio:1;border-radius:6px;border:1px solid var(--line);background:var(--panel-alt);
+  display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;
+  font-size:10.5px;color:var(--dim);position:relative;font-weight:600;
+}
+.cell.occupied{background:rgba(63,167,150,.18);border-color:var(--teal);color:var(--teal);}
+.cell.expiring{background:rgba(224,179,77,.18);border-color:var(--warn);color:var(--warn);}
+.cell.expired{background:rgba(214,88,74,.18);border-color:var(--danger);color:var(--danger);}
+
+/* bottom tabs */
+.tabbar{
+  position:fixed;bottom:0;left:0;right:0;z-index:30;
+  background:#1d2123;border-top:1px solid var(--line);
+  display:flex;padding:6px 6px calc(6px + env(safe-area-inset-bottom));
+}
+.tabbar button{
+  flex:1;background:none;border:none;color:var(--dim);display:flex;flex-direction:column;
+  align-items:center;gap:3px;padding:8px 2px;border-radius:8px;font-size:10.5px;font-weight:600;
+}
+.tabbar button.active{color:var(--amber);background:rgba(242,169,59,.1);}
+.tabbar svg{width:20px;height:20px;}
+
+.section{display:none;}
+.section.active{display:block;}
+
+/* modal / scanner */
+.modal-backdrop{
+  position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:50;
+  display:flex;align-items:center;justify-content:center;padding:20px;
+}
+.modal-backdrop.hidden{display:none;}
+.modal{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;max-width:420px;width:100%;max-height:88vh;overflow:auto;}
+.modal h3{font-size:16px;color:var(--amber);margin-bottom:12px;}
+.scan-wrap{position:relative;border-radius:10px;overflow:hidden;background:#000;aspect-ratio:1;}
+.scan-wrap video{width:100%;height:100%;object-fit:cover;}
+.scan-frame{
+  position:absolute;inset:15%;border:2px solid var(--amber);border-radius:10px;
+  box-shadow:0 0 0 999px rgba(0,0,0,.35);
+}
+.scan-status{font-size:12px;color:var(--dim);text-align:center;margin-top:10px;}
+.close-x{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.5);border:none;color:#fff;width:30px;height:30px;border-radius:50%;font-size:16px;z-index:2;}
+
+.toast{
+  position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:60;
+  background:var(--teal);color:#0e2320;padding:10px 18px;border-radius:8px;font-size:13px;font-weight:600;
+  box-shadow:0 6px 20px rgba(0,0,0,.35);opacity:0;pointer-events:none;transition:opacity .25s, top .25s;
+}
+.toast.show{opacity:1;top:20px;}
+.toast.err{background:var(--danger);color:#fff;}
+
+.subtle-btn{background:none;border:none;color:var(--amber);font-size:12.5px;font-weight:600;padding:6px 0;}
+.divider{height:1px;background:var(--line);margin:14px 0;}
+.hint{font-size:11.5px;color:var(--dim);margin-top:6px;line-height:1.5;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">
+    <div class="mark"></div>
+    <div>
+      <h1>คลังม้วนฟิล์ม</h1>
+      <span>รับเข้า · จ่ายออก · โลเคชั่น · ประวัติ</span>
+    </div>
+  </div>
+  <div class="sync-note">ข้อมูลนี้ใช้ร่วมกันทุกเครื่องในคลัง — พนักงานทุกคนที่เปิดหน้านี้จะเห็นข้อมูลเดียวกัน</div>
+</div>
+
+<main>
+
+  <!-- ============ RECEIVE ============ -->
+  <section id="sec-receive" class="section active">
+    <div class="panel">
+      <h2><span class="n">1</span> สแกน Part Tag</h2>
+      <button class="btn btn-primary" onclick="openScanner('receive')">📷 สแกน QR จากป้ายม้วน</button>
+      <p class="hint">สแกนแล้วระบบจะใส่รหัสลงช่อง "รหัสอ้างอิงป้าย" อัตโนมัติ — ถ้าสแกนไม่ได้ให้กรอกข้อมูลด้วยมือด้านล่าง</p>
+    </div>
+
+    <div class="panel">
+      <h2><span class="n">2</span> ข้อมูลม้วน</h2>
+      <div class="row2">
+        <div><label>รหัสอ้างอิงป้าย (Tag ID)</label><input id="r-tagid" class="mono" placeholder="สแกนหรือกรอกเอง">
+          <div class="hint mono" id="r-raw-scan" style="display:none;background:var(--panel-alt);border:1px solid var(--line);padding:8px 9px;border-radius:6px;margin-top:6px;word-break:break-all;"></div>
+        </div>
+        <div><label>Batch No</label><input id="r-batch" class="mono" placeholder="เช่น TEST"></div>
+      </div>
+      <label>รหัสสินค้า (Product)</label>
+      <input id="r-product" class="mono" placeholder="เช่น S3100-0300006000">
+      <label>รายละเอียด (Desc)</label>
+      <input id="r-desc" placeholder="เช่น ฝาในป้ายเหลือง">
+      <div class="row3">
+        <div><label>M/C</label><input id="r-mc" class="mono" placeholder="BL-102"></div>
+        <div><label>น้ำหนัก (กก.)</label><input id="r-qty" type="number" min="0" step="0.01" placeholder="350.00"></div>
+        <div><label>QA</label>
+          <select id="r-qa"><option value="PASS">PASS</option><option value="FAIL">FAIL</option></select>
+        </div>
+      </div>
+      <div class="row2">
+        <div><label>วันที่รับเข้า</label><input id="r-receipt" type="date"></div>
+        <div><label>วันหมดอายุ (EXP)</label><input id="r-exp" type="date"></div>
+      </div>
+      <div class="row2">
+        <div><label>พนักงาน</label><input id="r-emp" placeholder="ชื่อผู้บันทึก"></div>
+        <div><label>IQC</label><input id="r-iqc" placeholder="ผู้ตรวจ (ถ้ามี)"></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2><span class="n">3</span> กำหนดโลเคชั่นจัดเก็บ</h2>
+      <div class="row3">
+        <div><label>โซน</label>
+          <select id="r-zone"></select>
+        </div>
+        <div><label>แร็ค</label><input id="r-rack" type="number" min="1" max="30" value="1"></div>
+        <div><label>ชั้น</label><input id="r-level" type="number" min="1" max="6" value="1"></div>
+      </div>
+      <div class="hint">ตำแหน่งจะถูกสร้างเป็นรหัส เช่น <span class="mono" id="r-loc-preview">A01-1</span> — ถ้าตำแหน่งนี้มีของอยู่แล้วระบบจะเตือนก่อนบันทึก</div>
+      <div class="divider"></div>
+      <button class="btn btn-primary" onclick="saveReceive()">✅ บันทึกรับเข้า</button>
+    </div>
+  </section>
+
+  <!-- ============ ISSUE ============ -->
+  <section id="sec-issue" class="section">
+    <div class="panel">
+      <h2>ค้นหาม้วนที่จะจ่ายออก</h2>
+      <button class="btn btn-primary" onclick="openScanner('issue')" style="margin-bottom:10px;">📷 สแกน QR เพื่อค้นหา</button>
+      <input id="i-search" placeholder="พิมพ์ค้นหา: รหัสสินค้า / Batch / โลเคชั่น / Tag ID" oninput="renderIssueList()">
+    </div>
+    <div class="panel">
+      <h2>ม้วนในสต็อก <span class="n" id="i-count">0</span></h2>
+      <div id="i-list"></div>
+    </div>
+  </section>
+
+  <!-- ============ INVENTORY ============ -->
+  <section id="sec-inventory" class="section">
+    <div class="panel">
+      <h2>สรุปคลัง</h2>
+      <div class="row3" style="margin-top:0;">
+        <div class="roll-card" style="text-align:center;padding:10px;">
+          <div class="meta" style="margin:0;">ม้วนในสต็อก</div>
+          <div class="pid mono" id="stat-instock" style="font-size:20px;">0</div>
+        </div>
+        <div class="roll-card" style="text-align:center;padding:10px;">
+          <div class="meta" style="margin:0;">น้ำหนักรวม (กก.)</div>
+          <div class="pid mono" id="stat-weight" style="font-size:20px;">0</div>
+        </div>
+        <div class="roll-card" style="text-align:center;padding:10px;">
+          <div class="meta" style="margin:0;">ใกล้หมดอายุ</div>
+          <div class="pid mono" id="stat-expiring" style="font-size:20px;color:var(--warn);">0</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>แผนผังโลเคชั่น</h2>
+      <div class="pill-row" id="zone-pills"></div>
+      <div class="zone-grid" id="zone-grid"></div>
+      <div class="hint">🟢 มีของ &nbsp; 🟡 ใกล้หมดอายุ (≤14 วัน) &nbsp; 🔴 หมดอายุแล้ว &nbsp; ช่องเทา = ว่าง — แตะช่องที่มีของเพื่อดูรายละเอียดหรือย้าย</div>
+    </div>
+
+    <div class="panel">
+      <h2>ค้นหาในคลัง</h2>
+      <input id="inv-search" placeholder="ค้นหา: รหัสสินค้า / Batch / โลเคชั่น" oninput="renderInventoryList()">
+      <div id="inv-list" style="margin-top:12px;"></div>
+    </div>
+  </section>
+
+  <!-- ============ HISTORY ============ -->
+  <section id="sec-history" class="section">
+    <div class="panel">
+      <h2>ประวัติการเคลื่อนไหว</h2>
+      <div class="pill-row">
+        <button class="pill active" data-f="all" onclick="setHistFilter('all')">ทั้งหมด</button>
+        <button class="pill" data-f="receive" onclick="setHistFilter('receive')">รับเข้า</button>
+        <button class="pill" data-f="issue" onclick="setHistFilter('issue')">จ่ายออก</button>
+        <button class="pill" data-f="move" onclick="setHistFilter('move')">ย้ายโลเคชั่น</button>
+      </div>
+      <div id="hist-list" style="margin-top:12px;"></div>
+    </div>
+  </section>
+
+</main>
+
+<div class="tabbar">
+  <button class="tab-btn active" data-tab="receive" onclick="switchTab('receive')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+    รับเข้า
+  </button>
+  <button class="tab-btn" data-tab="issue" onclick="switchTab('issue')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+    จ่ายออก
+  </button>
+  <button class="tab-btn" data-tab="inventory" onclick="switchTab('inventory')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+    คลังสินค้า
+  </button>
+  <button class="tab-btn" data-tab="history" onclick="switchTab('history')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+    ประวัติ
+  </button>
+</div>
+
+<!-- scanner modal -->
+<div class="modal-backdrop hidden" id="scan-modal">
+  <div class="modal">
+    <h3>สแกน QR Code</h3>
+    <div class="scan-wrap">
+      <video id="scan-video" playsinline muted></video>
+      <div class="scan-frame"></div>
+      <button class="close-x" onclick="closeScanner()">✕</button>
+    </div>
+    <div class="scan-status" id="scan-status">กำลังเปิดกล้อง...</div>
+  </div>
+</div>
+
+<!-- move / detail modal -->
+<div class="modal-backdrop hidden" id="detail-modal">
+  <div class="modal" id="detail-body"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------------- state ---------------- */
+const ZONES = ['A','B','C','D','E','F'];
+const RACKS = 10, LEVELS = 4;
+let DATA = { rolls: [], transactions: [], locations: [] };
+let currentZone = 'A';
+let histFilter = 'all';
+let scanTarget = null;
+let scanStream = null;
+let scanRAF = null;
+
+function uid(prefix){ return prefix + '-' + Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+function todayStr(){ return new Date().toISOString().slice(0,10); }
+function fmtDate(d){ if(!d) return '-'; const [y,m,day]=d.split('-'); return day+'/'+m+'/'+y; }
+function daysUntil(d){ if(!d) return null; const diff = (new Date(d) - new Date(todayStr())) / 86400000; return Math.round(diff); }
+
+/* ---------------- storage ---------------- */
+async function loadData(){
+  try{
+    const res = await window.storage.get('wms-data', true);
+    if(res && res.value){ DATA = JSON.parse(res.value); }
+  }catch(e){ /* no data yet */ }
+  ZONES.forEach(z=>{ const o=document.querySelectorAll('#r-zone'); });
+  populateZoneSelect();
+  renderAll();
+}
+async function saveData(){
+  try{
+    await window.storage.set('wms-data', JSON.stringify(DATA), true);
+  }catch(e){
+    showToast('บันทึกไม่สำเร็จ ลองอีกครั้ง', true);
+  }
+}
+
+/* ---------------- toast ---------------- */
+function showToast(msg, isErr){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (isErr ? ' err' : '');
+  setTimeout(()=>{ t.className = 'toast'; }, 2400);
+}
+
+/* ---------------- tabs ---------------- */
+function switchTab(name){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('sec-'+name).classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active', b.dataset.tab===name));
+  if(name==='issue') renderIssueList();
+  if(name==='inventory') renderInventoryAll();
+  if(name==='history') renderHistory();
+}
+
+/* ---------------- receive ---------------- */
+function populateZoneSelect(){
+  const sel = document.getElementById('r-zone');
+  sel.innerHTML = ZONES.map(z=>`<option value="${z}">โซน ${z}</option>`).join('');
+  document.getElementById('r-receipt').value = todayStr();
+  updateLocPreview();
+}
+function updateLocPreview(){
+  const z = document.getElementById('r-zone').value || 'A';
+  const rack = String(document.getElementById('r-rack').value || 1).padStart(2,'0');
+  const lvl = document.getElementById('r-level').value || 1;
+  document.getElementById('r-loc-preview').textContent = `${z}${rack}-${lvl}`;
+}
+['r-zone','r-rack','r-level'].forEach(id=>{
+  document.addEventListener('DOMContentLoaded', ()=>{
+    const el = document.getElementById(id);
+    if(el) el.addEventListener('input', updateLocPreview);
+    if(el) el.addEventListener('change', updateLocPreview);
+  });
+});
+
+function saveReceive(){
+  const product = document.getElementById('r-product').value.trim();
+  const qty = parseFloat(document.getElementById('r-qty').value);
+  if(!product){ showToast('กรุณากรอกรหัสสินค้า', true); return; }
+  if(!qty || qty<=0){ showToast('กรุณากรอกน้ำหนักให้ถูกต้อง', true); return; }
+
+  const location = document.getElementById('r-loc-preview').textContent;
+  const occupied = DATA.rolls.find(r=>r.location===location && r.status==='instock');
+  if(occupied){
+    if(!confirm(`ตำแหน่ง ${location} มีม้วนอยู่แล้ว (${occupied.product}) ต้องการเก็บซ้อนตำแหน่งเดิมหรือไม่?`)) return;
+  }
+
+  const roll = {
+    id: uid('roll'),
+    tagId: document.getElementById('r-tagid').value.trim() || uid('TAG'),
+    product,
+    batch: document.getElementById('r-batch').value.trim() || '-',
+    mc: document.getElementById('r-mc').value.trim(),
+    qty, remainingQty: qty,
+    desc: document.getElementById('r-desc').value.trim(),
+    qa: document.getElementById('r-qa').value,
+    receiptDate: document.getElementById('r-receipt').value || todayStr(),
+    expDate: document.getElementById('r-exp').value,
+    employee: document.getElementById('r-emp').value.trim(),
+    iqc: document.getElementById('r-iqc').value.trim(),
+    location,
+    status: 'instock',
+    createdAt: Date.now()
+  };
+  DATA.rolls.push(roll);
+  logTx('receive', roll, qty, location);
+  saveData();
+  showToast(`รับเข้าเรียบร้อย → ${location}`);
+  clearReceiveForm();
+  renderAll();
+}
+function clearReceiveForm(){
+  ['r-tagid','r-batch','r-product','r-desc','r-mc','r-qty','r-emp','r-iqc','r-exp'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('r-qa').value='PASS';
+  document.getElementById('r-receipt').value = todayStr();
+  document.getElementById('r-rack').value = 1;
+  document.getElementById('r-level').value = 1;
+  updateLocPreview();
+}
+
+/* ---------------- issue ---------------- */
+function renderIssueList(){
+  const q = (document.getElementById('i-search').value || '').toLowerCase();
+  const list = DATA.rolls.filter(r=>r.status==='instock' &&
+    (!q || [r.product,r.batch,r.location,r.tagId,r.desc].join(' ').toLowerCase().includes(q)));
+  document.getElementById('i-count').textContent = list.length;
+  const el = document.getElementById('i-list');
+  if(list.length===0){
+    el.innerHTML = `<div class="empty"><div class="big">📦</div><p>ไม่พบม้วนในสต็อก</p></div>`;
+    return;
+  }
+  el.innerHTML = list.sort((a,b)=>b.createdAt-a.createdAt).map(r=>rollCardHtml(r, true)).join('');
+}
+function rollCardHtml(r, showIssue){
+  const dleft = daysUntil(r.expDate);
+  let expBadge = '';
+  if(dleft!==null){
+    if(dleft<0) expBadge = `<span class="badge badge-danger">หมดอายุแล้ว</span>`;
+    else if(dleft<=14) expBadge = `<span class="badge badge-warn">เหลือ ${dleft} วัน</span>`;
+  }
+  return `
+  <div class="roll-card">
+    <div class="top">
+      <div>
+        <div class="pid mono">${r.product}</div>
+        <div class="meta">Batch: ${r.batch} · M/C: ${r.mc||'-'} · ${r.desc||''}</div>
+        <div class="meta">น้ำหนักคงเหลือ: <b class="mono">${r.remainingQty}</b> กก. · รับเข้า ${fmtDate(r.receiptDate)} · หมดอายุ ${fmtDate(r.expDate)} ${expBadge}</div>
+      </div>
+      <div class="loc mono">${r.location}</div>
+    </div>
+    ${showIssue ? `
+    <div class="actions">
+      <button class="btn btn-teal btn-sm" onclick="promptIssue('${r.id}')">จ่ายออก</button>
+      <button class="btn btn-outline btn-sm" onclick="promptMove('${r.id}')">ย้ายโลเคชั่น</button>
+    </div>` : ''}
+  </div>`;
+}
+function promptIssue(id){
+  const r = DATA.rolls.find(x=>x.id===id);
+  if(!r) return;
+  const amt = prompt(`จ่ายออกกี่กิโลกรัม? (คงเหลือ ${r.remainingQty} กก.)`, r.remainingQty);
+  if(amt===null) return;
+  const val = parseFloat(amt);
+  if(!val || val<=0 || val>r.remainingQty){ showToast('จำนวนไม่ถูกต้อง', true); return; }
+  const emp = prompt('ชื่อพนักงานผู้จ่าย', '') || '';
+  r.remainingQty = +(r.remainingQty - val).toFixed(2);
+  logTx('issue', r, val, r.location, emp);
+  if(r.remainingQty<=0){ r.status='issued'; r.location=''; }
+  saveData();
+  showToast('จ่ายออกเรียบร้อย');
+  renderAll();
+}
+function promptMove(id){
+  const r = DATA.rolls.find(x=>x.id===id);
+  if(!r) return;
+  const loc = prompt('ย้ายไปโลเคชั่นใหม่ (เช่น B02-1)', r.location);
+  if(!loc) return;
+  const target = loc.trim().toUpperCase();
+  const occupied = DATA.rolls.find(x=>x.id!==id && x.location===target && x.status==='instock');
+  if(occupied && !confirm(`ตำแหน่ง ${target} มีของอยู่แล้ว ต้องการย้ายไปซ้อนหรือไม่?`)) return;
+  const oldLoc = r.location;
+  r.location = target;
+  logTx('move', r, r.remainingQty, target, '', oldLoc);
+  saveData();
+  showToast(`ย้ายจาก ${oldLoc} → ${target}`);
+  renderAll();
+}
+
+/* ---------------- inventory ---------------- */
+function renderInventoryAll(){
+  renderStats();
+  renderZonePills();
+  renderZoneGrid();
+  renderInventoryList();
+}
+function renderStats(){
+  const inStock = DATA.rolls.filter(r=>r.status==='instock');
+  document.getElementById('stat-instock').textContent = inStock.length;
+  document.getElementById('stat-weight').textContent = inStock.reduce((s,r)=>s+r.remainingQty,0).toFixed(1);
+  document.getElementById('stat-expiring').textContent = inStock.filter(r=>{
+    const d = daysUntil(r.expDate); return d!==null && d<=14;
+  }).length;
+}
+function renderZonePills(){
+  const el = document.getElementById('zone-pills');
+  el.innerHTML = ZONES.map(z=>`<button class="pill ${z===currentZone?'active':''}" onclick="setZone('${z}')">โซน ${z}</button>`).join('');
+}
+function setZone(z){ currentZone = z; renderZonePills(); renderZoneGrid(); }
+function renderZoneGrid(){
+  const el = document.getElementById('zone-grid');
+  let html = '';
+  for(let rack=1; rack<=RACKS; rack++){
+    for(let lvl=1; lvl<=LEVELS; lvl++){
+      const code = `${currentZone}${String(rack).padStart(2,'0')}-${lvl}`;
+      const roll = DATA.rolls.find(r=>r.location===code && r.status==='instock');
+      let cls = 'cell', label = code.split('-')[0].slice(1)+'·'+lvl;
+      if(roll){
+        const d = daysUntil(roll.expDate);
+        if(d!==null && d<0) cls += ' expired';
+        else if(d!==null && d<=14) cls += ' expiring';
+        else cls += ' occupied';
+        html += `<div class="${cls}" title="${code}" onclick="showLocDetail('${code}')">${label}</div>`;
+      }else{
+        html += `<div class="${cls}" title="${code}">${label}</div>`;
+      }
+    }
+  }
+  el.innerHTML = html;
+}
+function showLocDetail(code){
+  const r = DATA.rolls.find(x=>x.location===code && x.status==='instock');
+  if(!r) return;
+  document.getElementById('detail-body').innerHTML = `
+    <h3>ตำแหน่ง ${code}</h3>
+    ${rollCardHtml(r, true)}
+    <button class="btn btn-outline" style="margin-top:10px;" onclick="closeDetail()">ปิด</button>
+  `;
+  document.getElementById('detail-modal').classList.remove('hidden');
+}
+function closeDetail(){ document.getElementById('detail-modal').classList.add('hidden'); }
+
+function renderInventoryList(){
+  const q = (document.getElementById('inv-search').value || '').toLowerCase();
+  const list = DATA.rolls.filter(r=>r.status==='instock' &&
+    (!q || [r.product,r.batch,r.location,r.tagId].join(' ').toLowerCase().includes(q)));
+  const el = document.getElementById('inv-list');
+  if(list.length===0){ el.innerHTML = `<div class="empty"><p>ไม่พบข้อมูล</p></div>`; return; }
+  el.innerHTML = list.sort((a,b)=>a.location.localeCompare(b.location)).map(r=>rollCardHtml(r, true)).join('');
+}
+
+/* ---------------- history ---------------- */
+function logTx(type, roll, qty, location, employee, fromLoc){
+  DATA.transactions.push({
+    id: uid('tx'), type, tagId: roll.tagId, product: roll.product, batch: roll.batch,
+    qty, location, fromLoc: fromLoc||'', employee: employee || roll.employee || '',
+    timestamp: Date.now()
+  });
+}
+function setHistFilter(f){
+  histFilter = f;
+  document.querySelectorAll('#sec-history .pill').forEach(p=>p.classList.toggle('active', p.dataset.f===f));
+  renderHistory();
+}
+function renderHistory(){
+  const el = document.getElementById('hist-list');
+  let list = DATA.transactions.slice().sort((a,b)=>b.timestamp-a.timestamp);
+  if(histFilter!=='all') list = list.filter(t=>t.type===histFilter);
+  if(list.length===0){ el.innerHTML = `<div class="empty"><p>ยังไม่มีประวัติ</p></div>`; return; }
+  const labels = {receive:['รับเข้า','badge-stock'], issue:['จ่ายออก','badge-warn'], move:['ย้ายโลเคชั่น','badge-issued']};
+  el.innerHTML = list.map(t=>{
+    const [lab, cls] = labels[t.type] || ['-','badge-issued'];
+    const dt = new Date(t.timestamp);
+    const dstr = dt.toLocaleDateString('th-TH') + ' ' + dt.toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'});
+    return `<div class="roll-card">
+      <div class="top">
+        <div>
+          <span class="badge ${cls}">${lab}</span>
+          <div class="pid mono" style="margin-top:6px;">${t.product} <span style="color:var(--dim);font-weight:400;">· ${t.batch}</span></div>
+          <div class="meta">${t.type==='move' ? `${t.fromLoc} → ${t.location}` : `ตำแหน่ง ${t.location||'-'}`} · ${t.qty} กก. ${t.employee?('· โดย '+t.employee):''}</div>
+        </div>
+        <div class="meta mono" style="white-space:nowrap;">${dstr}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ---------------- scanner ---------------- */
+function openScanner(target){
+  scanTarget = target;
+  document.getElementById('scan-modal').classList.remove('hidden');
+  document.getElementById('scan-status').textContent = 'กำลังเปิดกล้อง...';
+  navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+    .then(stream=>{
+      scanStream = stream;
+      const video = document.getElementById('scan-video');
+      video.srcObject = stream;
+      video.play();
+      document.getElementById('scan-status').textContent = 'เล็ง QR ให้อยู่ในกรอบ';
+      scanLoop();
+    })
+    .catch(()=>{
+      document.getElementById('scan-status').textContent = 'เปิดกล้องไม่ได้ — กรุณากรอกข้อมูลด้วยมือแทน';
+    });
+}
+function scanLoop(){
+  const video = document.getElementById('scan-video');
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  function tick(){
+    if(!scanStream) return;
+    if(video.readyState === video.HAVE_ENOUGH_DATA){
+      canvas.width = video.videoWidth; canvas.height = video.videoHeight;
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      const img = ctx.getImageData(0,0,canvas.width,canvas.height);
+      const code = jsQR(img.data, img.width, img.height);
+      if(code && code.data){
+        handleScanResult(code.data);
+        return;
+      }
+    }
+    scanRAF = requestAnimationFrame(tick);
+  }
+  scanRAF = requestAnimationFrame(tick);
+}
+function parseScanText(text){
+  // 1) try JSON
+  try{
+    const obj = JSON.parse(text);
+    if(obj && typeof obj==='object') return obj;
+  }catch(e){}
+  // 2) try URL-query style: key=value&key2=value2
+  if(text.includes('=') && text.includes('&')){
+    try{
+      const obj = {};
+      new URLSearchParams(text).forEach((v,k)=>obj[k]=v);
+      if(Object.keys(obj).length>1) return obj;
+    }catch(e){}
+  }
+  // 3) try line-based "key: value" or "key,value"
+  if(text.includes('\n') || text.includes(';')){
+    const lines = text.split(/[\n;]/).map(l=>l.trim()).filter(Boolean);
+    const obj = {};
+    let matched = 0;
+    lines.forEach(l=>{
+      const m = l.split(/[:=]/);
+      if(m.length>=2){ obj[m[0].trim()] = m.slice(1).join(':').trim(); matched++; }
+    });
+    if(matched>=2) return obj;
+  }
+  return null; // couldn't parse structure — treat as plain code
+}
+
+const FIELD_KEY_MAP = {
+  tagid:'r-tagid', tag_id:'r-tagid', tagid_no:'r-tagid', id:'r-tagid',
+  product:'r-product', productcode:'r-product', product_code:'r-product', partno:'r-product',
+  batch:'r-batch', batchno:'r-batch', batch_no:'r-batch', lot:'r-batch',
+  mc:'r-mc', machine:'r-mc',
+  qty:'r-qty', quantity:'r-qty', weight:'r-qty', net_weight:'r-qty', netweight:'r-qty',
+  desc:'r-desc', description:'r-desc',
+  qa:'r-qa', qc:'r-qa', qastatus:'r-qa',
+  receiptdate:'r-receipt', receipt_date:'r-receipt', receivedate:'r-receipt',
+  expdate:'r-exp', exp_date:'r-exp', expirydate:'r-exp',
+  employee:'r-emp', emp:'r-emp',
+  iqc:'r-iqc'
+};
+function normKey(k){ return k.toLowerCase().replace(/[\s._-]/g,''); }
+function autofillFromObject(obj){
+  let filled = 0;
+  Object.keys(obj).forEach(k=>{
+    const fieldId = FIELD_KEY_MAP[normKey(k)];
+    if(fieldId){
+      const el = document.getElementById(fieldId);
+      if(el){ el.value = String(obj[k]).trim(); filled++; }
+    }
+  });
+  return filled;
+}
+
+function handleScanResult(text){
+  closeScanner();
+  if(scanTarget==='receive'){
+    const raw = document.getElementById('r-raw-scan');
+    raw.style.display = 'block';
+    raw.textContent = 'ข้อมูลดิบจาก QR: ' + text;
+    const parsed = parseScanText(text);
+    if(parsed){
+      const n = autofillFromObject(parsed);
+      document.getElementById('r-tagid').value = parsed.tagId || parsed.id || parsed.tagid || text;
+      updateLocPreview();
+      showToast(n>0 ? `สแกนสำเร็จ — เติมข้อมูลอัตโนมัติ ${n} ช่อง` : 'สแกนสำเร็จ — ไม่พบรูปแบบที่รู้จัก กรุณาตรวจสอบข้อมูลดิบด้านล่าง');
+    }else{
+      document.getElementById('r-tagid').value = text;
+      showToast('สแกนสำเร็จ — ยังไม่รู้จักรูปแบบ QR นี้ ใส่ไว้ในช่อง Tag ID แล้ว ดูข้อมูลดิบด้านล่างเพื่อตรวจสอบ');
+    }
+  }else if(scanTarget==='issue'){
+    document.getElementById('i-search').value = text;
+    renderIssueList();
+    showToast('ค้นหาจากรหัสที่สแกนแล้ว');
+  }
+}
+function closeScanner(){
+  document.getElementById('scan-modal').classList.add('hidden');
+  if(scanRAF) cancelAnimationFrame(scanRAF);
+  if(scanStream){ scanStream.getTracks().forEach(t=>t.stop()); scanStream=null; }
+}
+
+/* ---------------- render all ---------------- */
+function renderAll(){
+  renderIssueList();
+  renderInventoryAll();
+  renderHistory();
+}
+
+/* init */
+document.getElementById('r-zone').addEventListener?.('change', updateLocPreview);
+document.getElementById('r-rack').addEventListener('input', updateLocPreview);
+document.getElementById('r-level').addEventListener('input', updateLocPreview);
+document.getElementById('r-zone').addEventListener('change', updateLocPreview);
+loadData();
+</script>
+</body>
+</html>
