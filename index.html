@@ -67,8 +67,6 @@ input,select,textarea{
 input:focus,select:focus,textarea:focus{outline:none;border-color:var(--amber);}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
-.row4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;}
-@media(max-width:420px){.row4{grid-template-columns:1fr 1fr;}}
 
 .btn{
   border:none;border-radius:8px;padding:12px 16px;font-weight:600;font-size:14px;
@@ -118,8 +116,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--amber);}
 .empty p{font-size:13px;margin:4px 0;}
 
 /* location grid */
-.zone-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:6px;}
-.cell-pair{display:grid;grid-template-columns:1fr 1fr;gap:3px;border:1px solid var(--line);border-radius:6px;padding:3px;background:rgba(255,255,255,.02);}
+.zone-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(58px,1fr));gap:6px;}
 .cell{
   aspect-ratio:1;border-radius:6px;border:1px solid var(--line);background:var(--panel-alt);
   display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;
@@ -271,21 +268,15 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--amber);}
         <button onclick="clearLocOverride()">✕ ล้าง / เลือกเอง</button>
       </div>
       <div id="loc-manual-box">
-        <div class="row4">
+        <div class="row3">
           <div><label>โซน</label>
             <select id="r-zone"></select>
           </div>
           <div><label>แร็ค</label><input id="r-rack" type="number" min="1" max="30" value="1"></div>
           <div><label>ชั้น</label><input id="r-level" type="number" min="1" max="6" value="1"></div>
-          <div><label>ด้าน (ซ้าย/ขวา)</label>
-            <select id="r-side">
-              <option value="L">ซ้าย (L)</option>
-              <option value="R">ขวา (R)</option>
-            </select>
-          </div>
         </div>
       </div>
-      <div class="hint">ตำแหน่งจะถูกสร้างเป็นรหัส เช่น <span class="mono" id="r-loc-preview">A01-1L</span> — 1 ชั้นวางได้ 2 เลท (ซ้าย L / ขวา R) ถ้าตำแหน่งนี้มีของอยู่แล้วระบบจะเตือนก่อนบันทึก · รองรับป้ายที่พิมพ์รหัสตำแหน่งแบบ QR หรือ Barcode โดยตรง</div>
+      <div class="hint">ตำแหน่งจะถูกสร้างเป็นรหัส เช่น <span class="mono" id="r-loc-preview">A01-1</span> — ถ้าตำแหน่งนี้มีของอยู่แล้วระบบจะเตือนก่อนบันทึก · รองรับป้ายที่พิมพ์รหัสตำแหน่งแบบ QR หรือ Barcode โดยตรง</div>
       <div class="divider"></div>
       <button class="btn btn-primary" onclick="saveReceive()">✅ บันทึกรับเข้า</button>
     </div>
@@ -296,7 +287,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--amber);}
     <div class="panel">
       <h2>ค้นหาม้วนที่จะจ่ายออก</h2>
       <button class="btn btn-primary" onclick="openScanner('issue')" style="margin-bottom:10px;">📷 สแกน QR เพื่อค้นหา</button>
-      <input id="i-search" placeholder="พิมพ์ค้นหา: รหัสสินค้า / Batch / โลเคชั่น / Tag ID">
+      <input id="i-search" placeholder="พิมพ์ค้นหา: รหัสสินค้า / Batch / โลเคชั่น / Tag ID" oninput="renderIssueList()">
     </div>
     <div class="panel">
       <h2>ม้วนในสต็อก <span class="n" id="i-count">0</span></h2>
@@ -328,12 +319,12 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--amber);}
       <h2>แผนผังโลเคชั่น</h2>
       <div class="pill-row" id="zone-pills"></div>
       <div class="zone-grid" id="zone-grid"></div>
-      <div class="hint">🟢 มีของ &nbsp; 🟡 ใกล้หมดอายุ (≤14 วัน) &nbsp; 🔴 หมดอายุแล้ว &nbsp; ช่องเทา = ว่าง &nbsp; แต่ละกล่องคือ 1 ชั้น แบ่งเป็น 2 เลท: ซ้าย (L) / ขวา (R) — แตะช่องที่มีของเพื่อดูรายละเอียดหรือย้าย</div>
+      <div class="hint">🟢 มีของ &nbsp; 🟡 ใกล้หมดอายุ (≤14 วัน) &nbsp; 🔴 หมดอายุแล้ว &nbsp; ช่องเทา = ว่าง — แตะช่องที่มีของเพื่อดูรายละเอียดหรือย้าย</div>
     </div>
 
     <div class="panel">
       <h2>ค้นหาในคลัง</h2>
-      <input id="inv-search" placeholder="ค้นหา: รหัสสินค้า / Batch / โลเคชั่น">
+      <input id="inv-search" placeholder="ค้นหา: รหัสสินค้า / Batch / โลเคชั่น" oninput="renderInventoryList()">
       <div id="inv-list" style="margin-top:12px;"></div>
     </div>
   </section>
@@ -372,7 +363,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--amber);}
           <button onclick="lockAdmin()">🔒 ล็อกหน้านี้</button>
         </div>
         <h2>ค้นหา / กรองข้อมูล</h2>
-        <input id="admin-search" placeholder="ค้นหา: รหัสสินค้า / Batch / โลเคชั่น / Tag ID / พนักงาน">
+        <input id="admin-search" placeholder="ค้นหา: รหัสสินค้า / Batch / โลเคชั่น / Tag ID / พนักงาน" oninput="renderAdmin(true)">
         <div class="admin-toolbar" style="margin-top:10px;">
           <div class="pill-row" id="admin-status-pills" style="margin:0;flex:1;"></div>
           <select id="admin-sort" onchange="renderAdmin(true)">
@@ -458,7 +449,6 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--amber);}
 /* ---------------- state ---------------- */
 const ZONES = ['A','B','C','D','E','F'];
 const RACKS = 10, LEVELS = 4;
-const SIDES = ['L','R']; // 1 ชั้น (level) เก็บได้ 2 เลท: ซ้าย (L) / ขวา (R)
 let DATA = { rolls: [], transactions: [], locations: [] };
 let currentZone = 'A';
 let histFilter = 'all';
@@ -477,26 +467,22 @@ const ADMIN_PAGE_SIZE = 15;
 /* =========================================================================
    CLOUD SYNC CONFIG
    -------------------------------------------------------------------------
-   ลำดับความสำคัญ: ถ้าตั้งค่า FIREBASE_CONFIG ไว้ ระบบจะใช้ Firebase Realtime
-   Database เป็นหลัก (พุชข้อมูลทันทีทุกเครื่อง = เรียลไทม์แท้ 100% ไม่มีดีเลย์
-   จากการ poll) ถ้าไม่ได้ตั้ง Firebase แต่ตั้ง SHEETS_API_URL ไว้ ระบบจะใช้
-   Google Sheets แบบ poll ทุก 5 วินาทีแทน (near real-time เท่านั้น) — ดูขั้นตอน
-   ตั้งค่าแบบละเอียดในคู่มือ (WMS_SETUP_GUIDE.docx) ที่แนบมาให้
+   เพื่อให้แอปนี้ "ออนไลน์ตลอด" เมื่ออัปโหลดขึ้น GitHub (เช่นเปิดใช้ GitHub
+   Pages จาก repo) และให้ทุกเครื่อง/ทุกคนเห็นข้อมูลเดียวกันแบบเรียลไทม์ พร้อม
+   เก็บประวัติย้อนหลังได้ไม่มีวันหมดอายุ (เกิน 1 ปีแน่นอน) ให้สร้างโปรเจกต์
+   Firebase (ใช้ฟรี) แล้ววางค่าคอนฟิกแทนที่ null ด้านล่างนี้:
 
-   ทุกเครื่องที่เปิดไฟล์นี้จะอ่าน/เขียนข้อมูลชุดเดียวกัน ถ้ายังไม่ตั้งค่าอะไรเลย
-   แอปจะใช้พื้นที่จัดเก็บชั่วคราวของหน้าต่างนี้แทน — ใช้ดูตัวอย่างได้เท่านั้น
+     1) ไปที่ https://console.firebase.google.com → สร้างโปรเจกต์ใหม่
+     2) เปิดใช้งาน Build → Realtime Database (เริ่มด้วย test mode ได้)
+     3) Project settings → General → คัดลอกค่า "SDK setup and configuration"
+     4) วางแทนที่ null ด้านล่าง บันทึกไฟล์ แล้วอัปโหลดขึ้น GitHub/GitHub Pages
+        ข้อมูลจะซิงก์ทุกเครื่องแบบเรียลไทม์ทันที ดูขั้นตอนละเอียดใน README.md
+
+   ถ้ายังไม่ตั้งค่า (เป็น null) แอปจะใช้พื้นที่จัดเก็บชั่วคราวของหน้าต่างนี้
+   แทน — ใช้ดูตัวอย่างได้เท่านั้น ข้อมูลจะไม่ซิงก์ข้ามเครื่อง/ไม่ออนไลน์ถาวร
    ========================================================================= */
-
-/* !! คำเตือนความปลอดภัย: URL นี้ฝังอยู่ในหน้าเว็บ ใครก็ตามที่กด "View Source"
-   จะเห็น URL และสามารถยิง POST เขียนทับข้อมูลได้โดยไม่ต้อง login — ควรเพิ่ม
-   การตรวจสอบ token/secret ฝั่ง Apps Script (Code.gs) ก่อนใช้งานจริง */
-const SHEETS_API_URL = "https://script.google.com/macros/s/AKfycbz15qR6n__r7zu3l1BiF4iWxC6eNAcgfmtt4YV4VvDaN1N7Wsdv452OKppFcjBUSkI/exec";
-const SHEETS_POLL_MS = 5000; // ความถี่ในการดึงข้อมูลใหม่ (มิลลิวินาที) — ใช้เมื่อไม่ได้ตั้งค่า Firebase เท่านั้น
-
-/* ---- แนะนำ: Firebase Realtime Database — เรียลไทม์แท้ (push) ไม่ใช่ poll
-   ทำตามคู่มือ WMS_SETUP_GUIDE.docx เพื่อสร้างโปรเจกต์และวาง config ตรงนี้ ---- */
 const FIREBASE_CONFIG = null;
-/*
+/* ตัวอย่างการกรอกค่า (คัดลอกจาก Firebase Console มาแทนที่บรรทัดด้านบน):
 const FIREBASE_CONFIG = {
   apiKey: "AIzaSy...",
   authDomain: "your-project.firebaseapp.com",
@@ -508,26 +494,12 @@ const FIREBASE_CONFIG = {
 };
 */
 let fbRef = null;
-let cloudMode = false;      // true = firebase
-let sheetsMode = false;     // true = google sheets
-let sheetsPollTimer = null;
-let sheetsSaving = false;
-
-// สแนปช็อตล่าสุดที่ "เซิร์ฟเวอร์" ยืนยันแล้ว ใช้คำนวณส่วนต่าง (diff) ก่อนบันทึก
-// เพื่อเขียนเฉพาะรายการที่เปลี่ยนจริง — ป้องกันไม่ให้การบันทึกของพนักงานคนหนึ่ง
-// ไปเขียนทับข้อมูลของพนักงานอีกคนที่เพิ่งบันทึกม้วนอื่นไปพร้อมกัน
-let fbKnownRolls = {};
-let fbKnownTx = {};
-let opInProgress = false; // กันการกดปุ่มบันทึกซ้ำสองครั้งติดกัน (double-tap) จนเกิดข้อมูลซ้ำ
-let lastRenderedSig = null;   // ลายเซ็นข้อมูลล่าสุดที่ render ไปแล้ว กันการวาดหน้าจอซ้ำโดยไม่จำเป็น
-let renderDebounceTimer = null;
+let cloudMode = false;
 
 function uid(prefix){ return prefix + '-' + Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
 function todayStr(){ return new Date().toISOString().slice(0,10); }
 function fmtDate(d){ if(!d) return '-'; const [y,m,day]=d.split('-'); return day+'/'+m+'/'+y; }
 function daysUntil(d){ if(!d) return null; const diff = (new Date(d) - new Date(todayStr())) / 86400000; return Math.round(diff); }
-function dataSig(d){ try{ return JSON.stringify(d); }catch(e){ return String(Date.now()); } }
-function debounce(fn, ms){ let t=null; return (...args)=>{ clearTimeout(t); t=setTimeout(()=>fn(...args), ms); }; }
 
 /* ---------------- storage ---------------- */
 function setSyncNote(text, warn){
@@ -545,61 +517,21 @@ function initStorage(){
       cloudMode = true;
       setSyncNote('🟢 เชื่อมต่อฐานข้อมูลออนไลน์แล้ว — ข้อมูลอัปเดตเรียลไทม์ทุกเครื่อง', false);
       populateZoneSelect();
-      // debounce การ render เผื่อมีหลายรายการเปลี่ยนพร้อมกันในเสี้ยววินาทีเดียวกัน
-      // (ยังคง "รู้สึกเรียลไทม์" แต่ลดอาการหน้าจอกระตุกเวลาเปลี่ยนถี่ๆ)
-      const applySnapshot = debounce(()=>{
-        const sig = dataSig(DATA);
-        if(sig===lastRenderedSig) return;
-        lastRenderedSig = sig;
-        renderAll();
-      }, 120);
       fbRef.on('value', snap=>{
         const val = snap.val();
-        DATA = val ? { rolls: val.rolls ? Object.values(val.rolls) : [], transactions: val.transactions ? Object.values(val.transactions) : [], locations: [] }
-                   : { rolls: [], transactions: [], locations: [] };
-        fbKnownRolls = {}; DATA.rolls.forEach(r=>fbKnownRolls[r.id]=r);
-        fbKnownTx = {}; DATA.transactions.forEach(t=>fbKnownTx[t.id]=t);
-        setSyncNote('🟢 เชื่อมต่อฐานข้อมูลออนไลน์แล้ว — ข้อมูลอัปเดตเรียลไทม์ทุกเครื่อง', false);
-        applySnapshot();
+        DATA = val ? val : { rolls: [], transactions: [], locations: [] };
+        renderAll();
       }, ()=>{
         setSyncNote('🔴 เชื่อมต่อฐานข้อมูลไม่สำเร็จ — ตรวจสอบ FIREBASE_CONFIG / กติกาความปลอดภัยของ Realtime Database', true);
       });
       return;
     }catch(e){
-      setSyncNote('🔴 ตั้งค่า FIREBASE_CONFIG ไม่ถูกต้อง — ดูคู่มือ WMS_SETUP_GUIDE.docx', true);
+      setSyncNote('🔴 ตั้งค่า FIREBASE_CONFIG ไม่ถูกต้อง — ดู README.md', true);
     }
   }
-  if(SHEETS_API_URL){
-    sheetsMode = true;
-    setSyncNote('🟡 เชื่อมต่อ Google Sheet แล้ว (near real-time ~5 วิ) — กำลังซิงก์ข้อมูล...', true);
-    populateZoneSelect();
-    pollSheets(true);
-    if(sheetsPollTimer) clearInterval(sheetsPollTimer);
-    sheetsPollTimer = setInterval(()=>pollSheets(false), SHEETS_POLL_MS);
-    return;
-  }
   cloudMode = false;
-  setSyncNote('🟡 โหมดตัวอย่าง — ยังไม่เชื่อมต่อฐานข้อมูลออนไลน์ (ดูวิธีตั้งค่าในคู่มือ WMS_SETUP_GUIDE.docx)', true);
+  setSyncNote('🟡 โหมดตัวอย่าง — ยังไม่เชื่อมต่อฐานข้อมูลออนไลน์ (ดูวิธีตั้งค่าใน README.md)', true);
   loadLocalPreview();
-}
-async function pollSheets(isFirstLoad){
-  try{
-    const res = await fetch(SHEETS_API_URL, { method: 'GET' });
-    if(!res.ok) throw new Error('HTTP ' + res.status);
-    const val = await res.json();
-    if(sheetsSaving) return; // อย่าเผลอเขียนทับข้อมูลที่กำลังบันทึกอยู่
-    const next = val && (val.rolls || val.transactions || val.locations)
-      ? val : { rolls: [], transactions: [], locations: [] };
-    const sig = dataSig(next);
-    setSyncNote('🟡 เชื่อมต่อ Google Sheet แล้ว — ข้อมูลอัปเดตล่าสุดทุก ' + Math.round(SHEETS_POLL_MS/1000) + ' วินาที (ไม่ใช่เรียลไทม์แท้)', true);
-    if(sig===lastRenderedSig) return; // ข้อมูลไม่เปลี่ยน — ไม่ต้อง re-render ทับหน้าจอที่พนักงานกำลังใช้อยู่
-    lastRenderedSig = sig;
-    DATA = next;
-    renderAll();
-  }catch(e){
-    setSyncNote('🔴 ดึงข้อมูลจาก Google Sheet ไม่สำเร็จ — ตรวจสอบ SHEETS_API_URL และการ Deploy (Who has access: Anyone)', true);
-    if(isFirstLoad){ populateZoneSelect(); renderAll(); }
-  }
 }
 async function loadLocalPreview(){
   try{
@@ -611,38 +543,8 @@ async function loadLocalPreview(){
 }
 async function saveData(){
   if(cloudMode && fbRef){
-    // เขียนเฉพาะระเบียนที่เปลี่ยนจริงแบบ multi-path update (atomic) แทนการ
-    // set() ทับทั้งต้นไม้ — เพื่อไม่ให้การบันทึกจากเครื่องนี้ไปลบ/ทับข้อมูล
-    // ม้วนอื่นที่เพิ่งถูกเครื่องอื่นบันทึกเข้ามาในช่วงเวลาเดียวกัน
-    const updates = {};
-    const curRolls = {}; DATA.rolls.forEach(r=>curRolls[r.id]=r);
-    const curTx = {}; DATA.transactions.forEach(t=>curTx[t.id]=t);
-    Object.keys(curRolls).forEach(id=>{ if(dataSig(curRolls[id])!==dataSig(fbKnownRolls[id])) updates['rolls/'+id] = curRolls[id]; });
-    Object.keys(fbKnownRolls).forEach(id=>{ if(!curRolls[id]) updates['rolls/'+id] = null; });
-    Object.keys(curTx).forEach(id=>{ if(!fbKnownTx[id]) updates['transactions/'+id] = curTx[id]; });
-    Object.keys(fbKnownTx).forEach(id=>{ if(!curTx[id]) updates['transactions/'+id] = null; });
-    if(Object.keys(updates).length===0) return;
-    try{
-      await fbRef.update(updates);
-      fbKnownRolls = curRolls; fbKnownTx = curTx;
-      lastRenderedSig = dataSig(DATA);
-    }catch(e){ showToast('บันทึกขึ้นฐานข้อมูลออนไลน์ไม่สำเร็จ ลองอีกครั้ง', true); }
-    return;
-  }
-  if(sheetsMode){
-    sheetsSaving = true;
-    try{
-      await fetch(SHEETS_API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // ใช้ text/plain เพื่อเลี่ยงปัญหา CORS preflight ของ Apps Script
-        body: JSON.stringify(DATA)
-      });
-      lastRenderedSig = dataSig(DATA);
-    }catch(e){
-      showToast('บันทึกขึ้น Google Sheet ไม่สำเร็จ ลองอีกครั้ง', true);
-    }finally{
-      sheetsSaving = false;
-    }
+    try{ await fbRef.set(DATA); }
+    catch(e){ showToast('บันทึกขึ้นฐานข้อมูลออนไลน์ไม่สำเร็จ ลองอีกครั้ง', true); }
     return;
   }
   try{
@@ -651,7 +553,6 @@ async function saveData(){
     showToast('บันทึกไม่สำเร็จ ลองอีกครั้ง', true);
   }
 }
-
 
 /* ---------------- toast ---------------- */
 function showToast(msg, isErr){
@@ -684,10 +585,9 @@ function updateLocPreview(){
   const z = document.getElementById('r-zone').value || 'A';
   const rack = String(document.getElementById('r-rack').value || 1).padStart(2,'0');
   const lvl = document.getElementById('r-level').value || 1;
-  const side = document.getElementById('r-side').value || 'L';
-  document.getElementById('r-loc-preview').textContent = `${z}${rack}-${lvl}${side}`;
+  document.getElementById('r-loc-preview').textContent = `${z}${rack}-${lvl}`;
 }
-/* try to decompose a scanned/typed location code into zone+rack+level+side;
+/* try to decompose a scanned/typed location code into zone+rack+level;
    if it doesn't match the standard pattern, fall back to a raw override */
 function applyLocScan(text){
   const raw = String(text).trim();
@@ -700,18 +600,16 @@ function applyLocScan(text){
       const z = String(parsedObj.zone).trim().toUpperCase();
       const rack = String(parsedObj.rack||1).padStart(2,'0');
       const lvl = String(parsedObj.level||1);
-      const side = String(parsedObj.side||'L').trim().toUpperCase().charAt(0);
-      code = `${z}${rack}-${lvl}${side==='R'?'R':'L'}`;
+      code = `${z}${rack}-${lvl}`;
     }
   }
   code = code.toUpperCase();
-  const m = code.match(/^([A-Z])0*(\d{1,2})-(\d{1,2})([LR])?$/);
+  const m = code.match(/^([A-Z])0*(\d{1,2})-(\d{1,2})$/);
   if(m && ZONES.includes(m[1])){
     clearLocOverride(false);
     document.getElementById('r-zone').value = m[1];
     document.getElementById('r-rack').value = parseInt(m[2],10);
     document.getElementById('r-level').value = parseInt(m[3],10);
-    document.getElementById('r-side').value = m[4] || 'L';
     updateLocPreview();
     showToast(`สแกนตำแหน่งสำเร็จ → ${document.getElementById('r-loc-preview').textContent}`);
   }else{
@@ -729,8 +627,15 @@ function clearLocOverride(reRender){
   document.getElementById('loc-manual-box').style.display = 'block';
   if(reRender!==false) updateLocPreview();
 }
+['r-zone','r-rack','r-level'].forEach(id=>{
+  document.addEventListener('DOMContentLoaded', ()=>{
+    const el = document.getElementById(id);
+    if(el) el.addEventListener('input', updateLocPreview);
+    if(el) el.addEventListener('change', updateLocPreview);
+  });
+});
+
 function saveReceive(){
-  if(opInProgress){ showToast('กำลังบันทึกอยู่ กรุณารอสักครู่', true); return; }
   const product = document.getElementById('r-product').value.trim();
   const qty = parseFloat(document.getElementById('r-qty').value);
   if(!product){ showToast('กรุณากรอกรหัสสินค้า', true); return; }
@@ -741,7 +646,6 @@ function saveReceive(){
   if(occupied){
     if(!confirm(`ตำแหน่ง ${location} มีม้วนอยู่แล้ว (${occupied.product}) ต้องการเก็บซ้อนตำแหน่งเดิมหรือไม่?`)) return;
   }
-  opInProgress = true;
 
   const roll = {
     id: uid('roll'),
@@ -761,7 +665,7 @@ function saveReceive(){
   };
   DATA.rolls.push(roll);
   logTx('receive', roll, qty, location);
-  Promise.resolve(saveData()).finally(()=>{ opInProgress = false; });
+  saveData();
   showToast(`รับเข้าเรียบร้อย → ${location}`);
   clearReceiveForm();
   renderAll();
@@ -772,7 +676,6 @@ function clearReceiveForm(){
   document.getElementById('r-receipt').value = todayStr();
   document.getElementById('r-rack').value = 1;
   document.getElementById('r-level').value = 1;
-  document.getElementById('r-side').value = 'L';
   document.getElementById('r-raw-scan').style.display = 'none';
   clearLocOverride();
 }
@@ -815,7 +718,6 @@ function rollCardHtml(r, showIssue){
   </div>`;
 }
 function promptIssue(id){
-  if(opInProgress){ showToast('กำลังบันทึกอยู่ กรุณารอสักครู่', true); return; }
   const r = DATA.rolls.find(x=>x.id===id);
   if(!r) return;
   const amt = prompt(`จ่ายออกกี่กิโลกรัม? (คงเหลือ ${r.remainingQty} กก.)`, r.remainingQty);
@@ -823,11 +725,10 @@ function promptIssue(id){
   const val = parseFloat(amt);
   if(!val || val<=0 || val>r.remainingQty){ showToast('จำนวนไม่ถูกต้อง', true); return; }
   const emp = prompt('ชื่อพนักงานผู้จ่าย', '') || '';
-  opInProgress = true;
   r.remainingQty = +(r.remainingQty - val).toFixed(2);
   logTx('issue', r, val, r.location, emp);
   if(r.remainingQty<=0){ r.status='issued'; r.location=''; }
-  Promise.resolve(saveData()).finally(()=>{ opInProgress = false; });
+  saveData();
   showToast('จ่ายออกเรียบร้อย');
   renderAll();
 }
@@ -848,19 +749,13 @@ function promptMove(id){
       <button onclick="clearMoveOverride()">✕ ล้าง / เลือกเอง</button>
     </div>
     <div id="mv-manual-box">
-      <div class="row4">
+      <div class="row3">
         <div><label>โซน</label><select id="mv-zone"></select></div>
         <div><label>แร็ค</label><input id="mv-rack" type="number" min="1" max="30" value="1"></div>
         <div><label>ชั้น</label><input id="mv-level" type="number" min="1" max="6" value="1"></div>
-        <div><label>ด้าน (ซ้าย/ขวา)</label>
-          <select id="mv-side">
-            <option value="L">ซ้าย (L)</option>
-            <option value="R">ขวา (R)</option>
-          </select>
-        </div>
       </div>
     </div>
-    <div class="hint">ตำแหน่งใหม่: <span class="mono" id="mv-loc-preview">A01-1L</span></div>
+    <div class="hint">ตำแหน่งใหม่: <span class="mono" id="mv-loc-preview">A01-1</span></div>
     <div class="divider"></div>
     <div class="row2">
       <button class="btn btn-outline" onclick="closeMoveModal()">ยกเลิก</button>
@@ -869,14 +764,13 @@ function promptMove(id){
   `;
   const sel = document.getElementById('mv-zone');
   sel.innerHTML = ZONES.map(z=>`<option value="${z}">โซน ${z}</option>`).join('');
-  const m = (r.location||'').toUpperCase().match(/^([A-Z])0*(\d{1,2})-(\d{1,2})([LR])?$/);
+  const m = (r.location||'').toUpperCase().match(/^([A-Z])0*(\d{1,2})-(\d{1,2})$/);
   if(m && ZONES.includes(m[1])){
     sel.value = m[1];
     document.getElementById('mv-rack').value = parseInt(m[2],10);
     document.getElementById('mv-level').value = parseInt(m[3],10);
-    document.getElementById('mv-side').value = m[4] || 'L';
   }
-  ['mv-zone','mv-rack','mv-level','mv-side'].forEach(fid=>{
+  ['mv-zone','mv-rack','mv-level'].forEach(fid=>{
     document.getElementById(fid).addEventListener('input', updateMoveLocPreview);
     document.getElementById(fid).addEventListener('change', updateMoveLocPreview);
   });
@@ -888,8 +782,7 @@ function updateMoveLocPreview(){
   const z = document.getElementById('mv-zone').value || 'A';
   const rack = String(document.getElementById('mv-rack').value || 1).padStart(2,'0');
   const lvl = document.getElementById('mv-level').value || 1;
-  const side = document.getElementById('mv-side').value || 'L';
-  document.getElementById('mv-loc-preview').textContent = `${z}${rack}-${lvl}${side}`;
+  document.getElementById('mv-loc-preview').textContent = `${z}${rack}-${lvl}`;
 }
 function applyMoveScan(text){
   const raw = String(text).trim();
@@ -902,18 +795,16 @@ function applyMoveScan(text){
       const z = String(parsedObj.zone).trim().toUpperCase();
       const rack = String(parsedObj.rack||1).padStart(2,'0');
       const lvl = String(parsedObj.level||1);
-      const side = String(parsedObj.side||'L').trim().toUpperCase().charAt(0);
-      code = `${z}${rack}-${lvl}${side==='R'?'R':'L'}`;
+      code = `${z}${rack}-${lvl}`;
     }
   }
   code = code.toUpperCase();
-  const m = code.match(/^([A-Z])0*(\d{1,2})-(\d{1,2})([LR])?$/);
+  const m = code.match(/^([A-Z])0*(\d{1,2})-(\d{1,2})$/);
   if(m && ZONES.includes(m[1])){
     clearMoveOverride(false);
     document.getElementById('mv-zone').value = m[1];
     document.getElementById('mv-rack').value = parseInt(m[2],10);
     document.getElementById('mv-level').value = parseInt(m[3],10);
-    document.getElementById('mv-side').value = m[4] || 'L';
     updateMoveLocPreview();
     showToast(`สแกนตำแหน่งสำเร็จ → ${document.getElementById('mv-loc-preview').textContent}`);
   }else{
@@ -934,18 +825,16 @@ function clearMoveOverride(reRender){
   if(reRender!==false) updateMoveLocPreview();
 }
 function confirmMove(){
-  if(opInProgress){ showToast('กำลังบันทึกอยู่ กรุณารอสักครู่', true); return; }
   const r = DATA.rolls.find(x=>x.id===moveTargetId);
   if(!r) return;
   const target = document.getElementById('mv-loc-preview').textContent.trim().toUpperCase();
   if(!target){ showToast('กรุณาระบุตำแหน่งใหม่', true); return; }
   const occupied = DATA.rolls.find(x=>x.id!==r.id && x.location===target && x.status==='instock');
   if(occupied && !confirm(`ตำแหน่ง ${target} มีของอยู่แล้ว ต้องการย้ายไปซ้อนหรือไม่?`)) return;
-  opInProgress = true;
   const oldLoc = r.location;
   r.location = target;
   logTx('move', r, r.remainingQty, target, '', oldLoc);
-  Promise.resolve(saveData()).finally(()=>{ opInProgress = false; });
+  saveData();
   showToast(`ย้ายจาก ${oldLoc} → ${target}`);
   closeMoveModal();
   renderAll();
@@ -981,22 +870,18 @@ function renderZoneGrid(){
   let html = '';
   for(let rack=1; rack<=RACKS; rack++){
     for(let lvl=1; lvl<=LEVELS; lvl++){
-      html += '<div class="cell-pair">';
-      SIDES.forEach(side=>{
-        const code = `${currentZone}${String(rack).padStart(2,'0')}-${lvl}${side}`;
-        const roll = DATA.rolls.find(r=>r.location===code && r.status==='instock');
-        let cls = 'cell', label = String(rack).padStart(2,'0')+'·'+lvl+side;
-        if(roll){
-          const d = daysUntil(roll.expDate);
-          if(d!==null && d<0) cls += ' expired';
-          else if(d!==null && d<=14) cls += ' expiring';
-          else cls += ' occupied';
-          html += `<div class="${cls}" title="${code}" onclick="showLocDetail('${code}')">${label}</div>`;
-        }else{
-          html += `<div class="${cls}" title="${code}">${label}</div>`;
-        }
-      });
-      html += '</div>';
+      const code = `${currentZone}${String(rack).padStart(2,'0')}-${lvl}`;
+      const roll = DATA.rolls.find(r=>r.location===code && r.status==='instock');
+      let cls = 'cell', label = code.split('-')[0].slice(1)+'·'+lvl;
+      if(roll){
+        const d = daysUntil(roll.expDate);
+        if(d!==null && d<0) cls += ' expired';
+        else if(d!==null && d<=14) cls += ' expiring';
+        else cls += ' occupied';
+        html += `<div class="${cls}" title="${code}" onclick="showLocDetail('${code}')">${label}</div>`;
+      }else{
+        html += `<div class="${cls}" title="${code}">${label}</div>`;
+      }
     }
   }
   el.innerHTML = html;
@@ -1106,7 +991,30 @@ function parseScanText(text){
     });
     if(matched>=2) return obj;
   }
+  // 4) try plain comma-separated positional values — the format printed on MRP
+  //    Part Tag QR labels in this warehouse: [TYPE],PRODUCT,BATCH,RECEIPT(YYYYMMDD),EXP(YYYYMMDD)
+  //    e.g.  [C],S3100-0300006000,TEST,20260721,20260821
+  if(text.includes(',') && !text.includes(':') && !text.includes('=')){
+    const tokens = text.split(',').map(t=>t.trim()).filter(t=>t.length>0);
+    if(tokens.length>=3){
+      const obj = {};
+      const typeCode = tokens[0].replace(/[\[\]]/g,'').toUpperCase();
+      if(typeCode==='C' || typeCode==='P' || typeCode==='PASS') obj.qa = 'PASS';
+      else if(typeCode==='R' || typeCode==='F' || typeCode==='FAIL') obj.qa = 'FAIL';
+      if(tokens[1]) obj.product = tokens[1];
+      if(tokens[2]) obj.batch = tokens[2];
+      if(tokens[3]) obj.receiptdate = toIsoDate(tokens[3]);
+      if(tokens[4]) obj.expdate = toIsoDate(tokens[4]);
+      if(Object.keys(obj).length>=2) return obj;
+    }
+  }
   return null; // couldn't parse structure — treat as plain code
+}
+function toIsoDate(s){
+  s = String(s).trim();
+  if(/^\d{8}$/.test(s)) return `${s.slice(0,4)}-${s.slice(4,6)}-${s.slice(6,8)}`;
+  if(/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+  return s;
 }
 
 const FIELD_KEY_MAP = {
@@ -1298,7 +1206,6 @@ function openEditRoll(id){
   document.getElementById('edit-modal').classList.remove('hidden');
 }
 function saveEditRoll(id){
-  if(opInProgress){ showToast('กำลังบันทึกอยู่ กรุณารอสักครู่', true); return; }
   const r = DATA.rolls.find(x=>x.id===id);
   if(!r) return;
   const product = document.getElementById('e-product').value.trim();
@@ -1306,7 +1213,6 @@ function saveEditRoll(id){
   const remaining = parseFloat(document.getElementById('e-remaining').value);
   if(!product){ showToast('กรุณากรอกรหัสสินค้า', true); return; }
   if(isNaN(qty) || qty<0 || isNaN(remaining) || remaining<0){ showToast('น้ำหนักไม่ถูกต้อง', true); return; }
-  opInProgress = true;
   Object.assign(r, {
     tagId: document.getElementById('e-tagid').value.trim() || r.tagId,
     batch: document.getElementById('e-batch').value.trim() || '-',
@@ -1322,7 +1228,7 @@ function saveEditRoll(id){
     status: document.getElementById('e-status').value
   });
   logTx('edit', r, r.remainingQty, r.location, 'เจ้าหน้าที่ควบคุม');
-  Promise.resolve(saveData()).finally(()=>{ opInProgress = false; });
+  saveData();
   showToast('บันทึกการแก้ไขเรียบร้อย');
   closeEditModal();
   renderAll();
@@ -1348,15 +1254,10 @@ function renderAll(){
 }
 
 /* init */
-['r-zone','r-rack','r-level','r-side'].forEach(id=>{
-  const el = document.getElementById(id);
-  if(!el) return;
-  el.addEventListener('input', updateLocPreview);
-  el.addEventListener('change', updateLocPreview);
-});
-document.getElementById('i-search').addEventListener('input', debounce(renderIssueList, 200));
-document.getElementById('inv-search').addEventListener('input', debounce(renderInventoryList, 200));
-document.getElementById('admin-search').addEventListener('input', debounce(()=>renderAdmin(true), 200));
+document.getElementById('r-zone').addEventListener?.('change', updateLocPreview);
+document.getElementById('r-rack').addEventListener('input', updateLocPreview);
+document.getElementById('r-level').addEventListener('input', updateLocPreview);
+document.getElementById('r-zone').addEventListener('change', updateLocPreview);
 initStorage();
 </script>
 </body>
