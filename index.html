@@ -11,17 +11,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
 
 :root{
-  --bg:#181b1d;
-  --panel:#232729;
-  --panel-alt:#2c3134;
-  --line:#3a4044;
-  --amber:#f2a93b;
-  --amber-dark:#c9821e;
-  --teal:#3fa796;
-  --warn:#e0b34d;
-  --danger:#d6584a;
-  --text:#ececE7;
-  --dim:#9ba1a5;
+  --bg:#eef2f9;
+  --panel:#ffffff;
+  --panel-alt:#f3f6fb;
+  --line:#dbe3f0;
+  --primary:#2563eb;
+  --primary-dark:#1d4ed8;
+  --teal:#0d9488;
+  --warn:#b45309;
+  --danger:#dc2626;
+  --text:#111827;
+  --dim:#64748b;
   --radius:10px;
 }
 *{box-sizing:border-box;}
@@ -30,43 +30,46 @@ body{padding-bottom:78px;min-height:100vh;}
 h1,h2,h3{font-family:'Oswald',sans-serif;letter-spacing:.02em;margin:0;}
 .mono{font-family:'IBM Plex Mono',monospace;}
 button{font-family:inherit;cursor:pointer;}
-::selection{background:var(--amber);color:#181b1d;}
+::selection{background:var(--primary);color:#ffffff;}
 
 /* ---------- header ---------- */
 .topbar{
   position:sticky;top:0;z-index:20;
-  background:linear-gradient(180deg,#1d2123 0%, #181b1d 100%);
-  border-bottom:2px solid var(--amber);
+  background:linear-gradient(180deg,#ffffff 0%, #eef2f9 100%);
+  border-bottom:2px solid var(--primary);
   padding:14px 16px 12px;
 }
 .topbar .brand{display:flex;align-items:center;gap:10px;}
 .brand .mark{
   width:34px;height:34px;border-radius:7px;
-  background:repeating-linear-gradient(45deg,var(--amber),var(--amber) 6px,#181b1d 6px,#181b1d 12px);
+  background:repeating-linear-gradient(45deg,var(--primary),var(--primary) 6px,#ffffff 6px,#ffffff 12px);border:1px solid var(--primary-dark);
   flex:none;
 }
 .brand h1{font-size:19px;color:var(--text);}
 .brand span{font-size:11px;color:var(--dim);display:block;margin-top:1px;}
 .sync-note{
-  margin-top:8px;font-size:11px;color:var(--amber);
-  background:rgba(242,169,59,.08);border:1px solid rgba(242,169,59,.3);
+  margin-top:8px;font-size:11px;color:var(--primary);
+  background:rgba(37,99,235,.08);border:1px solid rgba(37,99,235,.3);
   padding:6px 10px;border-radius:6px;
 }
 
 /* ---------- layout ---------- */
 main{padding:16px;max-width:720px;margin:0 auto;}
-.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin-bottom:14px;}
-.panel h2{font-size:15px;color:var(--amber);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
-.panel h2 .n{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--bg);background:var(--amber);border-radius:4px;padding:1px 6px;}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin-bottom:14px;box-shadow:0 1px 3px rgba(16,24,40,.05);}
+.panel.key{border-left:4px solid var(--primary);}
+.panel h2{font-size:15px;color:var(--primary);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.panel h2 .n{font-family:'IBM Plex Mono',monospace;font-size:11px;color:#ffffff;background:var(--primary);border-radius:4px;padding:1px 6px;}
 
 label{display:block;font-size:12px;color:var(--dim);margin:10px 0 5px;}
 input,select,textarea{
   width:100%;background:var(--panel-alt);border:1px solid var(--line);border-radius:7px;
   color:var(--text);padding:10px 11px;font-size:14px;font-family:inherit;
 }
-input:focus,select:focus,textarea:focus{outline:none;border-color:var(--amber);}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary);}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+.row4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;}
+@media(max-width:420px){.row4{grid-template-columns:1fr 1fr;}}
 
 .btn{
   border:none;border-radius:8px;padding:12px 16px;font-weight:600;font-size:14px;
@@ -74,12 +77,12 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--amber);}
   transition:transform .08s ease;
 }
 .btn:active{transform:scale(.98);}
-.btn-primary{background:var(--amber);color:#1a1c1d;}
-.btn-primary:hover{background:#ffb84d;}
+.btn-primary{background:var(--primary);color:#ffffff;}
+.btn-primary:hover{background:var(--primary-dark);}
 .btn-outline{background:transparent;border:1px solid var(--line);color:var(--text);}
-.btn-outline:hover{border-color:var(--amber);color:var(--amber);}
+.btn-outline:hover{border-color:var(--primary);color:var(--primary);}
 .btn-danger{background:transparent;border:1px solid var(--danger);color:var(--danger);}
-.btn-teal{background:var(--teal);color:#0e2320;}
+.btn-teal{background:var(--teal);color:#ffffff;}
 .btn-sm{padding:7px 10px;font-size:12.5px;width:auto;}
 
 .pill-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px;}
@@ -87,14 +90,14 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--amber);}
   border:1px solid var(--line);background:var(--panel-alt);color:var(--dim);
   border-radius:20px;padding:6px 13px;font-size:12.5px;font-weight:600;
 }
-.pill.active{background:var(--amber);border-color:var(--amber);color:#1a1c1d;}
+.pill.active{background:var(--primary);border-color:var(--primary);color:#ffffff;}
 
 /* status badges */
 .badge{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:20px;letter-spacing:.03em;}
-.badge-stock{background:rgba(63,167,150,.15);color:var(--teal);border:1px solid rgba(63,167,150,.4);}
+.badge-stock{background:rgba(13,148,136,.15);color:var(--teal);border:1px solid rgba(13,148,136,.4);}
 .badge-issued{background:rgba(155,161,165,.15);color:var(--dim);border:1px solid var(--line);}
-.badge-warn{background:rgba(224,179,77,.15);color:var(--warn);border:1px solid rgba(224,179,77,.4);}
-.badge-danger{background:rgba(214,88,74,.15);color:var(--danger);border:1px solid rgba(214,88,74,.4);}
+.badge-warn{background:rgba(180,83,9,.15);color:var(--warn);border:1px solid rgba(180,83,9,.4);}
+.badge-danger{background:rgba(220,38,38,.15);color:var(--danger);border:1px solid rgba(220,38,38,.4);}
 
 /* roll card */
 .roll-card{
@@ -105,8 +108,8 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--amber);}
 .roll-card .pid{font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:600;color:var(--text);}
 .roll-card .meta{font-size:12px;color:var(--dim);margin-top:4px;line-height:1.6;}
 .roll-card .loc{
-  font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--amber);
-  background:rgba(242,169,59,.1);border:1px solid rgba(242,169,59,.3);
+  font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--primary);
+  background:rgba(37,99,235,.1);border:1px solid rgba(37,99,235,.3);
   padding:3px 9px;border-radius:6px;white-space:nowrap;
 }
 .roll-card .actions{display:flex;gap:8px;margin-top:10px;}
@@ -116,27 +119,28 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--amber);}
 .empty p{font-size:13px;margin:4px 0;}
 
 /* location grid */
-.zone-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(58px,1fr));gap:6px;}
+.zone-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:6px;}
+.cell-pair{display:grid;grid-template-columns:1fr 1fr;gap:3px;border:1px solid var(--line);border-radius:6px;padding:3px;background:rgba(15,23,42,.025);}
 .cell{
   aspect-ratio:1;border-radius:6px;border:1px solid var(--line);background:var(--panel-alt);
   display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;
   font-size:10.5px;color:var(--dim);position:relative;font-weight:600;
 }
-.cell.occupied{background:rgba(63,167,150,.18);border-color:var(--teal);color:var(--teal);}
-.cell.expiring{background:rgba(224,179,77,.18);border-color:var(--warn);color:var(--warn);}
-.cell.expired{background:rgba(214,88,74,.18);border-color:var(--danger);color:var(--danger);}
+.cell.occupied{background:rgba(13,148,136,.18);border-color:var(--teal);color:var(--teal);}
+.cell.expiring{background:rgba(180,83,9,.18);border-color:var(--warn);color:var(--warn);}
+.cell.expired{background:rgba(220,38,38,.18);border-color:var(--danger);color:var(--danger);}
 
 /* bottom tabs */
 .tabbar{
   position:fixed;bottom:0;left:0;right:0;z-index:30;
-  background:#1d2123;border-top:1px solid var(--line);
+  background:#ffffff;border-top:1px solid var(--line);box-shadow:0 -2px 10px rgba(16,24,40,.06);
   display:flex;padding:6px 6px calc(6px + env(safe-area-inset-bottom));
 }
 .tabbar button{
   flex:1;background:none;border:none;color:var(--dim);display:flex;flex-direction:column;
   align-items:center;gap:3px;padding:8px 2px;border-radius:8px;font-size:10.5px;font-weight:600;
 }
-.tabbar button.active{color:var(--amber);background:rgba(242,169,59,.1);}
+.tabbar button.active{color:var(--primary);background:rgba(37,99,235,.1);}
 .tabbar svg{width:20px;height:20px;}
 
 .section{display:none;}
@@ -149,11 +153,11 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--amber);}
 }
 .modal-backdrop.hidden{display:none;}
 .modal{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;max-width:420px;width:100%;max-height:88vh;overflow:auto;}
-.modal h3{font-size:16px;color:var(--amber);margin-bottom:12px;}
+.modal h3{font-size:16px;color:var(--primary);margin-bottom:12px;}
 .scan-wrap{position:relative;border-radius:10px;overflow:hidden;background:#000;aspect-ratio:1;}
 .scan-wrap video{width:100%;height:100%;object-fit:cover;}
 .scan-frame{
-  position:absolute;inset:15%;border:2px solid var(--amber);border-radius:10px;
+  position:absolute;inset:15%;border:2px solid var(--primary);border-radius:10px;
   box-shadow:0 0 0 999px rgba(0,0,0,.35);
 }
 .scan-status{font-size:12px;color:var(--dim);text-align:center;margin-top:10px;}
@@ -161,24 +165,36 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--amber);}
 
 .toast{
   position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:60;
-  background:var(--teal);color:#0e2320;padding:10px 18px;border-radius:8px;font-size:13px;font-weight:600;
+  background:var(--teal);color:#ffffff;padding:10px 18px;border-radius:8px;font-size:13px;font-weight:600;
   box-shadow:0 6px 20px rgba(0,0,0,.35);opacity:0;pointer-events:none;transition:opacity .25s, top .25s;
 }
 .toast.show{opacity:1;top:20px;}
 .toast.err{background:var(--danger);color:#fff;}
 
-.subtle-btn{background:none;border:none;color:var(--amber);font-size:12.5px;font-weight:600;padding:6px 0;}
+.subtle-btn{background:none;border:none;color:var(--primary);font-size:12.5px;font-weight:600;padding:6px 0;}
 .divider{height:1px;background:var(--line);margin:14px 0;}
 .hint{font-size:11.5px;color:var(--dim);margin-top:6px;line-height:1.5;}
+.req{color:var(--danger);margin-left:3px;font-weight:700;}
+.field-invalid{border-color:var(--danger) !important;box-shadow:0 0 0 1px var(--danger);}
+.product-lookup{
+  display:flex;align-items:center;gap:7px;font-size:12px;margin-top:6px;padding:7px 10px;
+  border-radius:7px;min-height:16px;
+}
+.product-lookup.found{background:rgba(13,148,136,.1);border:1px solid rgba(13,148,136,.4);color:var(--teal);}
+.product-lookup.notfound{background:rgba(180,83,9,.1);border:1px solid rgba(180,83,9,.35);color:var(--warn);}
+.product-lookup.loading{background:var(--panel-alt);border:1px solid var(--line);color:var(--dim);}
 
 /* ---------- location scan block ---------- */
-.loc-scan-btn{background:var(--panel-alt);border:1px dashed var(--amber-dark);color:var(--amber);
+.loc-scan-btn{background:var(--panel-alt);border:1px dashed var(--primary-dark);color:var(--primary);
   border-radius:8px;padding:11px 14px;font-weight:600;font-size:13.5px;width:100%;
   display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px;}
 .loc-scan-btn:active{transform:scale(.98);}
+.loc-preview-box{background:rgba(37,99,235,.06);border:1px solid rgba(37,99,235,.3);border-radius:8px;padding:10px 12px;margin:10px 0 4px;text-align:center;}
+.loc-preview-box .code{font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:700;color:var(--primary);letter-spacing:.02em;}
+.loc-preview-box .label{font-size:12px;color:var(--dim);margin-top:3px;}
 .loc-override{
   display:flex;align-items:center;justify-content:space-between;gap:10px;
-  background:rgba(63,167,150,.1);border:1px solid rgba(63,167,150,.4);border-radius:8px;
+  background:rgba(13,148,136,.1);border:1px solid rgba(13,148,136,.4);border-radius:8px;
   padding:9px 12px;margin-bottom:10px;
 }
 .loc-override .val{font-family:'IBM Plex Mono',monospace;color:var(--teal);font-weight:700;font-size:14.5px;}
@@ -201,7 +217,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--amber);}
 .admin-row .pid{font-family:'IBM Plex Mono',monospace;font-size:13.5px;font-weight:600;}
 .admin-row .meta{font-size:11.5px;color:var(--dim);margin-top:4px;line-height:1.55;}
 .admin-row .actions{display:flex;gap:7px;margin-top:9px;}
-.badge-edit{background:rgba(242,169,59,.15);color:var(--amber);border:1px solid rgba(242,169,59,.4);}
+.badge-edit{background:rgba(37,99,235,.15);color:var(--primary);border:1px solid rgba(37,99,235,.4);}
 .pager{display:flex;align-items:center;justify-content:space-between;margin-top:12px;font-size:12px;color:var(--dim);}
 .pager .btns{display:flex;gap:6px;}
 .field-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
@@ -235,7 +251,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--amber);}
 
     <div class="panel">
       <h2><span class="n">2</span> ข้อมูลม้วน</h2>
-      <p class="hint" style="margin-top:-4px;margin-bottom:10px;">ช่องด้านล่างจะถูกกรอกให้อัตโนมัติทันทีที่สแกน QR Part Tag จาก MRP ในขั้นตอนที่ 1 — ตรวจสอบความถูกต้องก่อนบันทึกทุกครั้ง</p>
+      <p class="hint" style="margin-top:-4px;margin-bottom:10px;">ช่องด้านล่างจะถูกกรอกให้อัตโนมัติทันทีที่สแกน QR Part Tag จาก MRP ในขั้นตอนที่ 1 — ตรวจสอบความถูกต้องก่อนบันทึกทุกครั้ง · ช่องที่มี <span class="req">*</span> จำเป็นต้องกรอกก่อนบันทึก</p>
       <div class="row2">
         <div><label>รหัสอ้างอิงป้าย (Tag ID)</label><input id="r-tagid" class="mono" placeholder="สแกนหรือกรอกเอง">
           <div class="hint mono" id="r-raw-scan" style="display:none;background:var(--panel-alt);border:1px solid var(--line);padding:8px 9px;border-radius:6px;margin-top:6px;word-break:break-all;"></div>
@@ -244,11 +260,13 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--amber);}
       </div>
       <label>รหัสสินค้า (Product)</label>
       <input id="r-product" class="mono" placeholder="เช่น S3100-0300006000">
+      <label>ชื่อสินค้า</label>
+      <input id="r-product-name" class="mono" placeholder="จะแสดงอัตโนมัติหลังกรอก/สแกนรหัสสินค้า" readonly style="opacity:.85;">
+      <div id="r-product-lookup" class="product-lookup" style="display:none;"></div>
       <label>รายละเอียด (Desc)</label>
       <input id="r-desc" placeholder="เช่น ฝาในป้ายเหลือง">
-      <div class="row3">
-        <div><label>M/C</label><input id="r-mc" class="mono" placeholder="BL-102"></div>
-        <div><label>น้ำหนัก (กก.)</label><input id="r-qty" type="number" min="0" step="0.01" placeholder="350.00"></div>
+      <div class="row2">
+        <div><label>น้ำหนัก (กก.)<span class="req">*</span></label><input id="r-qty" type="number" min="0" step="0.01" placeholder="350.00"></div>
         <div><label>QA</label>
           <select id="r-qa"><option value="PASS">PASS</option><option value="FAIL">FAIL</option></select>
         </div>
@@ -257,26 +275,36 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--amber);}
         <div><label>วันที่รับเข้า</label><input id="r-receipt" type="date"></div>
         <div><label>วันหมดอายุ (EXP)</label><input id="r-exp" type="date"></div>
       </div>
-      <label>พนักงาน</label><input id="r-emp" placeholder="ชื่อผู้บันทึก">
+      <label>พนักงาน<span class="req">*</span></label><input id="r-emp" placeholder="ชื่อผู้บันทึก">
     </div>
 
-    <div class="panel">
-      <h2><span class="n">3</span> กำหนดโลเคชั่นจัดเก็บ</h2>
+    <div class="panel key">
+      <h2><span class="n">3</span> กำหนดโลเคชั่นจัดเก็บ<span class="req">*</span></h2>
       <button class="loc-scan-btn" onclick="openScanner('location')">📷 สแกน QR / Barcode ป้ายโลเคชั่น</button>
       <div id="loc-override-box" class="loc-override" style="display:none;">
         <div>ตำแหน่งจากการสแกน: <span class="val mono" id="loc-override-val"></span></div>
         <button onclick="clearLocOverride()">✕ ล้าง / เลือกเอง</button>
       </div>
       <div id="loc-manual-box">
-        <div class="row3">
+        <div class="row4">
           <div><label>โซน</label>
             <select id="r-zone"></select>
           </div>
           <div><label>แร็ค</label><input id="r-rack" type="number" min="1" max="30" value="1"></div>
           <div><label>ชั้น</label><input id="r-level" type="number" min="1" max="6" value="1"></div>
+          <div><label>ด้าน (ซ้าย/ขวา)</label>
+            <select id="r-side">
+              <option value="L">ซ้าย (L)</option>
+              <option value="R">ขวา (R)</option>
+            </select>
+          </div>
         </div>
       </div>
-      <div class="hint">ตำแหน่งจะถูกสร้างเป็นรหัส เช่น <span class="mono" id="r-loc-preview">A01-1</span> — ถ้าตำแหน่งนี้มีของอยู่แล้วระบบจะเตือนก่อนบันทึก · รองรับป้ายที่พิมพ์รหัสตำแหน่งแบบ QR หรือ Barcode โดยตรง</div>
+      <div class="loc-preview-box">
+        <div class="code mono" id="r-loc-preview">A01-01L</div>
+        <div class="label" id="r-loc-label">โซน A · แร็ค 01 · ชั้น 01 · ด้าน ซ้าย (L)</div>
+      </div>
+      <div class="hint">ตำแหน่งนี้จะถูกใช้เป็นรหัสอ้างอิงตรงกับที่แสดงในแผนผังโลเคชั่น (แท็บ "คลังสินค้า") — 1 ชั้นวางได้ 2 เลท (ซ้าย L / ขวา R) ถ้าตำแหน่งนี้มีของอยู่แล้วระบบจะเตือนก่อนบันทึก · รองรับป้ายที่พิมพ์รหัสตำแหน่งแบบ QR หรือ Barcode โดยตรง</div>
       <div class="divider"></div>
       <button class="btn btn-primary" onclick="saveReceive()">✅ บันทึกรับเข้า</button>
     </div>
@@ -287,7 +315,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--amber);}
     <div class="panel">
       <h2>ค้นหาม้วนที่จะจ่ายออก</h2>
       <button class="btn btn-primary" onclick="openScanner('issue')" style="margin-bottom:10px;">📷 สแกน QR เพื่อค้นหา</button>
-      <input id="i-search" placeholder="พิมพ์ค้นหา: รหัสสินค้า / Batch / โลเคชั่น / Tag ID" oninput="renderIssueList()">
+      <input id="i-search" placeholder="พิมพ์ค้นหา: รหัสสินค้า / Batch / โลเคชั่น / Tag ID">
     </div>
     <div class="panel">
       <h2>ม้วนในสต็อก <span class="n" id="i-count">0</span></h2>
@@ -315,16 +343,16 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--amber);}
       </div>
     </div>
 
-    <div class="panel">
+    <div class="panel key">
       <h2>แผนผังโลเคชั่น</h2>
       <div class="pill-row" id="zone-pills"></div>
       <div class="zone-grid" id="zone-grid"></div>
-      <div class="hint">🟢 มีของ &nbsp; 🟡 ใกล้หมดอายุ (≤14 วัน) &nbsp; 🔴 หมดอายุแล้ว &nbsp; ช่องเทา = ว่าง — แตะช่องที่มีของเพื่อดูรายละเอียดหรือย้าย</div>
+      <div class="hint">🟢 มีของ &nbsp; 🟡 ใกล้หมดอายุ (≤14 วัน) &nbsp; 🔴 หมดอายุแล้ว &nbsp; ช่องเทา = ว่าง &nbsp; แต่ละกล่องคือ 1 ชั้น แบ่งเป็น 2 เลท: ซ้าย (L) / ขวา (R) — แตะช่องที่มีของเพื่อดูรายละเอียดหรือย้าย</div>
     </div>
 
     <div class="panel">
       <h2>ค้นหาในคลัง</h2>
-      <input id="inv-search" placeholder="ค้นหา: รหัสสินค้า / Batch / โลเคชั่น" oninput="renderInventoryList()">
+      <input id="inv-search" placeholder="ค้นหา: รหัสสินค้า / Batch / โลเคชั่น">
       <div id="inv-list" style="margin-top:12px;"></div>
     </div>
   </section>
@@ -363,7 +391,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--amber);}
           <button onclick="lockAdmin()">🔒 ล็อกหน้านี้</button>
         </div>
         <h2>ค้นหา / กรองข้อมูล</h2>
-        <input id="admin-search" placeholder="ค้นหา: รหัสสินค้า / Batch / โลเคชั่น / Tag ID / พนักงาน" oninput="renderAdmin(true)">
+        <input id="admin-search" placeholder="ค้นหา: รหัสสินค้า / Batch / โลเคชั่น / Tag ID / พนักงาน">
         <div class="admin-toolbar" style="margin-top:10px;">
           <div class="pill-row" id="admin-status-pills" style="margin:0;flex:1;"></div>
           <select id="admin-sort" onchange="renderAdmin(true)">
@@ -449,6 +477,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--amber);}
 /* ---------------- state ---------------- */
 const ZONES = ['A','B','C','D','E','F'];
 const RACKS = 10, LEVELS = 4;
+const SIDES = ['L','R']; // 1 ชั้น (level) เก็บได้ 2 เลท: ซ้าย (L) / ขวา (R)
 let DATA = { rolls: [], transactions: [], locations: [] };
 let currentZone = 'A';
 let histFilter = 'all';
@@ -465,24 +494,43 @@ let adminPageNum = 1;
 const ADMIN_PAGE_SIZE = 15;
 
 /* =========================================================================
+   PRODUCT MASTER LOOKUP (VLOOKUP-style รหัสสินค้า → ชื่อสินค้า)
+   -------------------------------------------------------------------------
+   ดึงข้อมูลจาก Google Sheet ที่ระบุ (คอลัมน์ A = รหัสสินค้า, คอลัมน์ B = ชื่อสินค้า
+   แถวแรกถือเป็นหัวตาราง) ผ่านลิงก์ export CSV สาธารณะ — Sheet ต้องตั้งค่าแชร์เป็น
+   "ทุกคนที่มีลิงก์ - ดูได้ (Viewer)" ไม่เช่นนั้นจะดึงข้อมูลไม่ได้ (จะเห็นข้อความ
+   เตือนสีเหลืองใต้ช่องรหัสสินค้าเมื่อดึงไม่สำเร็จ)
+   ========================================================================= */
+const PRODUCT_SHEET_ID = '1DqJdgomtZbiS2KrvoqWxcCrreqm8I4D6KJpf4bDvBlA';
+const PRODUCT_SHEET_GID = '0';
+const PRODUCT_SHEET_CSV_URL = `https://docs.google.com/spreadsheets/d/${PRODUCT_SHEET_ID}/export?format=csv&gid=${PRODUCT_SHEET_GID}`;
+let PRODUCT_LOOKUP = {};          // { 'S3100-0300006000': 'ชื่อสินค้า...' } — คีย์เป็นตัวพิมพ์ใหญ่เสมอ
+let productLookupLoaded = false;
+let productLookupLoading = null;  // Promise ระหว่างโหลด กันการยิงซ้ำซ้อน
+
+/* =========================================================================
    CLOUD SYNC CONFIG
    -------------------------------------------------------------------------
-   เพื่อให้แอปนี้ "ออนไลน์ตลอด" เมื่ออัปโหลดขึ้น GitHub (เช่นเปิดใช้ GitHub
-   Pages จาก repo) และให้ทุกเครื่อง/ทุกคนเห็นข้อมูลเดียวกันแบบเรียลไทม์ พร้อม
-   เก็บประวัติย้อนหลังได้ไม่มีวันหมดอายุ (เกิน 1 ปีแน่นอน) ให้สร้างโปรเจกต์
-   Firebase (ใช้ฟรี) แล้ววางค่าคอนฟิกแทนที่ null ด้านล่างนี้:
+   ลำดับความสำคัญ: ถ้าตั้งค่า FIREBASE_CONFIG ไว้ ระบบจะใช้ Firebase Realtime
+   Database เป็นหลัก (พุชข้อมูลทันทีทุกเครื่อง = เรียลไทม์แท้ 100% ไม่มีดีเลย์
+   จากการ poll) ถ้าไม่ได้ตั้ง Firebase แต่ตั้ง SHEETS_API_URL ไว้ ระบบจะใช้
+   Google Sheets แบบ poll ทุก 5 วินาทีแทน (near real-time เท่านั้น) — ดูขั้นตอน
+   ตั้งค่าแบบละเอียดในคู่มือ (WMS_SETUP_GUIDE.docx) ที่แนบมาให้
 
-     1) ไปที่ https://console.firebase.google.com → สร้างโปรเจกต์ใหม่
-     2) เปิดใช้งาน Build → Realtime Database (เริ่มด้วย test mode ได้)
-     3) Project settings → General → คัดลอกค่า "SDK setup and configuration"
-     4) วางแทนที่ null ด้านล่าง บันทึกไฟล์ แล้วอัปโหลดขึ้น GitHub/GitHub Pages
-        ข้อมูลจะซิงก์ทุกเครื่องแบบเรียลไทม์ทันที ดูขั้นตอนละเอียดใน README.md
-
-   ถ้ายังไม่ตั้งค่า (เป็น null) แอปจะใช้พื้นที่จัดเก็บชั่วคราวของหน้าต่างนี้
-   แทน — ใช้ดูตัวอย่างได้เท่านั้น ข้อมูลจะไม่ซิงก์ข้ามเครื่อง/ไม่ออนไลน์ถาวร
+   ทุกเครื่องที่เปิดไฟล์นี้จะอ่าน/เขียนข้อมูลชุดเดียวกัน ถ้ายังไม่ตั้งค่าอะไรเลย
+   แอปจะใช้พื้นที่จัดเก็บชั่วคราวของหน้าต่างนี้แทน — ใช้ดูตัวอย่างได้เท่านั้น
    ========================================================================= */
+
+/* !! คำเตือนความปลอดภัย: URL นี้ฝังอยู่ในหน้าเว็บ ใครก็ตามที่กด "View Source"
+   จะเห็น URL และสามารถยิง POST เขียนทับข้อมูลได้โดยไม่ต้อง login — ควรเพิ่ม
+   การตรวจสอบ token/secret ฝั่ง Apps Script (Code.gs) ก่อนใช้งานจริง */
+const SHEETS_API_URL = "https://script.google.com/macros/s/AKfycbz15qR6n__r7zu3l1BiF4iWxC6eNAcgfmtt4YV4VvDaN1N7Wsdv452OKppFcjBUSkI/exec";
+const SHEETS_POLL_MS = 5000; // ความถี่ในการดึงข้อมูลใหม่ (มิลลิวินาที) — ใช้เมื่อไม่ได้ตั้งค่า Firebase เท่านั้น
+
+/* ---- แนะนำ: Firebase Realtime Database — เรียลไทม์แท้ (push) ไม่ใช่ poll
+   ทำตามคู่มือ WMS_SETUP_GUIDE.docx เพื่อสร้างโปรเจกต์และวาง config ตรงนี้ ---- */
 const FIREBASE_CONFIG = null;
-/* ตัวอย่างการกรอกค่า (คัดลอกจาก Firebase Console มาแทนที่บรรทัดด้านบน):
+/*
 const FIREBASE_CONFIG = {
   apiKey: "AIzaSy...",
   authDomain: "your-project.firebaseapp.com",
@@ -494,20 +542,161 @@ const FIREBASE_CONFIG = {
 };
 */
 let fbRef = null;
-let cloudMode = false;
+let cloudMode = false;      // true = firebase
+let sheetsMode = false;     // true = google sheets
+let sheetsPollTimer = null;
+let sheetsSaving = false;
+
+// สแนปช็อตล่าสุดที่ "เซิร์ฟเวอร์" ยืนยันแล้ว ใช้คำนวณส่วนต่าง (diff) ก่อนบันทึก
+// เพื่อเขียนเฉพาะรายการที่เปลี่ยนจริง — ป้องกันไม่ให้การบันทึกของพนักงานคนหนึ่ง
+// ไปเขียนทับข้อมูลของพนักงานอีกคนที่เพิ่งบันทึกม้วนอื่นไปพร้อมกัน
+let fbKnownRolls = {};
+let fbKnownTx = {};
+let opInProgress = false; // กันการกดปุ่มบันทึกซ้ำสองครั้งติดกัน (double-tap) จนเกิดข้อมูลซ้ำ
+let lastRenderedSig = null;   // ลายเซ็นข้อมูลล่าสุดที่ render ไปแล้ว กันการวาดหน้าจอซ้ำโดยไม่จำเป็น
+let renderDebounceTimer = null;
 
 function uid(prefix){ return prefix + '-' + Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
 function todayStr(){ return new Date().toISOString().slice(0,10); }
 function fmtDate(d){ if(!d) return '-'; const [y,m,day]=d.split('-'); return day+'/'+m+'/'+y; }
 function daysUntil(d){ if(!d) return null; const diff = (new Date(d) - new Date(todayStr())) / 86400000; return Math.round(diff); }
 
+/* =========================================================================
+   LOCATION CODE — จุดเดียวที่สร้าง/แปลความรหัสตำแหน่งของทั้งแอป
+   -------------------------------------------------------------------------
+   รูปแบบมาตรฐาน: {โซน}{แร็ค 2 หลัก}-{ชั้น 2 หลัก}{ด้าน L/R} เช่น "A01-03L"
+   ใช้ฟังก์ชันชุดนี้ทุกที่ (ฟอร์มรับเข้า, ย้ายโลเคชั่น, แผนผังโลเคชั่น,
+   การ์ดแสดงผล, ประวัติ, จัดการ) เพื่อให้รหัส/คำอธิบายตำแหน่งตรงกันเป๊ะทุกจุด
+   ========================================================================= */
+function pad2(n){ return String(n).padStart(2,'0'); }
+function locCode(zone, rack, level, side){
+  return `${String(zone).toUpperCase()}${pad2(rack)}-${pad2(level)}${side==='R'?'R':'L'}`;
+}
+function decomposeLocCode(code){
+  const m = String(code||'').trim().toUpperCase().match(/^([A-Z])0*(\d{1,2})-0*(\d{1,2})([LR])?$/);
+  if(!m) return null;
+  return { zone:m[1], rack:parseInt(m[2],10), level:parseInt(m[3],10), side:(m[4]||'L') };
+}
+function locLabel(code){
+  const d = decomposeLocCode(code);
+  if(!d) return code ? code : '-';
+  const sideTh = d.side==='R' ? 'ขวา (R)' : 'ซ้าย (L)';
+  return `โซน ${d.zone} · แร็ค ${pad2(d.rack)} · ชั้น ${pad2(d.level)} · ด้าน ${sideTh}`;
+}
+
+/* ---------------- product master lookup ---------------- */
+function parseCsvLine(line){
+  // minimal RFC4180-ish CSV field splitter (handles quoted fields with commas/escaped quotes)
+  const out = []; let cur = ''; let inQ = false;
+  for(let i=0; i<line.length; i++){
+    const c = line[i];
+    if(inQ){
+      if(c === '"'){
+        if(line[i+1] === '"'){ cur += '"'; i++; } else { inQ = false; }
+      } else cur += c;
+    }else{
+      if(c === '"') inQ = true;
+      else if(c === ','){ out.push(cur); cur=''; }
+      else cur += c;
+    }
+  }
+  out.push(cur);
+  return out.map(s=>s.trim());
+}
+function parseCsv(text){
+  return text.split(/\r?\n/).filter(l=>l.length>0).map(parseCsvLine);
+}
+async function loadProductLookup(force){
+  if(productLookupLoading) return productLookupLoading;
+  if(productLookupLoaded && !force) return Promise.resolve();
+  productLookupLoading = (async()=>{
+    try{
+      const res = await fetch(PRODUCT_SHEET_CSV_URL, { cache: force ? 'no-store' : 'default' });
+      if(!res.ok) throw new Error('HTTP ' + res.status);
+      const csv = await res.text();
+      const rows = parseCsv(csv);
+      if(rows.length === 0) throw new Error('empty sheet');
+      // หาคอลัมน์รหัส/ชื่อสินค้าจากหัวตาราง ถ้าหาไม่เจอ fallback เป็นคอลัมน์ A/B
+      let codeCol = 0, nameCol = 1, startRow = 0;
+      const header = rows[0].map(h=>h.toLowerCase());
+      const codeIdx = header.findIndex(h=>h.includes('รหัส') || h.includes('code'));
+      const nameIdx = header.findIndex(h=>h.includes('ชื่อ') || h.includes('name'));
+      if(codeIdx>-1 || nameIdx>-1){
+        codeCol = codeIdx>-1 ? codeIdx : 0;
+        nameCol = nameIdx>-1 ? nameIdx : 1;
+        startRow = 1; // มีหัวตาราง ข้ามแถวแรก
+      }
+      const map = {};
+      for(let i=startRow; i<rows.length; i++){
+        const row = rows[i];
+        const code = (row[codeCol]||'').trim();
+        const name = (row[nameCol]||'').trim();
+        if(code) map[code.toUpperCase()] = name;
+      }
+      PRODUCT_LOOKUP = map;
+      productLookupLoaded = true;
+    }catch(e){
+      productLookupLoaded = false;
+      // เงียบไว้ตอนโหลดพื้นหลัง — จะแจ้งเตือนตอนผู้ใช้พิมพ์รหัสแล้วหาไม่เจอแทน
+    }finally{
+      productLookupLoading = null;
+    }
+  })();
+  return productLookupLoading;
+}
+function lookupProductName(code){
+  if(!code) return '';
+  return PRODUCT_LOOKUP[String(code).trim().toUpperCase()] || '';
+}
+function hideProductLookup(){
+  const el = document.getElementById('r-product-lookup');
+  if(el){ el.style.display = 'none'; el.className = 'product-lookup'; el.textContent = ''; }
+  const nameEl = document.getElementById('r-product-name');
+  if(nameEl) nameEl.value = '';
+}
+function showProductLookup(state, text){
+  const el = document.getElementById('r-product-lookup');
+  if(!el) return;
+  el.style.display = 'flex';
+  el.className = 'product-lookup ' + state;
+  el.textContent = text;
+}
+async function onProductCodeInput(){
+  const code = document.getElementById('r-product').value.trim();
+  const nameEl = document.getElementById('r-product-name');
+  markInvalid('r-product', false);
+  if(!code){ hideProductLookup(); return; }
+  if(nameEl) nameEl.value = '';
+  if(!productLookupLoaded && !productLookupLoading){
+    showProductLookup('loading', '🔎 กำลังค้นหาชื่อสินค้า...');
+    await loadProductLookup();
+  }else if(productLookupLoading){
+    showProductLookup('loading', '🔎 กำลังโหลดฐานข้อมูลสินค้า...');
+    await productLookupLoading;
+  }
+  // ถ้าผู้ใช้พิมพ์รหัสต่อระหว่างรอโหลด ให้เช็คว่ารหัสในช่องยังเป็นตัวเดิมที่ค้นหาอยู่ไหม
+  const currentCode = document.getElementById('r-product').value.trim();
+  if(currentCode !== code) return;
+  const name = lookupProductName(code);
+  if(name){
+    if(nameEl) nameEl.value = name;
+    showProductLookup('found', `✅ พบในฐานข้อมูลสินค้า`);
+  }else if(productLookupLoaded){
+    showProductLookup('notfound', '⚠️ ไม่พบรหัสนี้ในฐานข้อมูลสินค้า — ตรวจสอบรหัสหรือปรับปรุงชีตอ้างอิง');
+  }else{
+    showProductLookup('notfound', '⚠️ ดึงฐานข้อมูลสินค้าไม่สำเร็จ — ตรวจสอบสิทธิ์แชร์ของ Google Sheet (ต้องเป็น "ทุกคนที่มีลิงก์ - ดูได้")');
+  }
+}
+function dataSig(d){ try{ return JSON.stringify(d); }catch(e){ return String(Date.now()); } }
+function debounce(fn, ms){ let t=null; return (...args)=>{ clearTimeout(t); t=setTimeout(()=>fn(...args), ms); }; }
+
 /* ---------------- storage ---------------- */
 function setSyncNote(text, warn){
   const el = document.getElementById('sync-note');
   if(!el) return;
   el.textContent = text;
-  el.style.color = warn ? 'var(--warn)' : 'var(--amber)';
-  el.style.borderColor = warn ? 'rgba(224,179,77,.35)' : 'rgba(242,169,59,.3)';
+  el.style.color = warn ? 'var(--warn)' : 'var(--primary)';
+  el.style.borderColor = warn ? 'rgba(180,83,9,.35)' : 'rgba(37,99,235,.3)';
 }
 function initStorage(){
   if(FIREBASE_CONFIG){
@@ -517,21 +706,61 @@ function initStorage(){
       cloudMode = true;
       setSyncNote('🟢 เชื่อมต่อฐานข้อมูลออนไลน์แล้ว — ข้อมูลอัปเดตเรียลไทม์ทุกเครื่อง', false);
       populateZoneSelect();
+      // debounce การ render เผื่อมีหลายรายการเปลี่ยนพร้อมกันในเสี้ยววินาทีเดียวกัน
+      // (ยังคง "รู้สึกเรียลไทม์" แต่ลดอาการหน้าจอกระตุกเวลาเปลี่ยนถี่ๆ)
+      const applySnapshot = debounce(()=>{
+        const sig = dataSig(DATA);
+        if(sig===lastRenderedSig) return;
+        lastRenderedSig = sig;
+        renderAll();
+      }, 120);
       fbRef.on('value', snap=>{
         const val = snap.val();
-        DATA = val ? val : { rolls: [], transactions: [], locations: [] };
-        renderAll();
+        DATA = val ? { rolls: val.rolls ? Object.values(val.rolls) : [], transactions: val.transactions ? Object.values(val.transactions) : [], locations: [] }
+                   : { rolls: [], transactions: [], locations: [] };
+        fbKnownRolls = {}; DATA.rolls.forEach(r=>fbKnownRolls[r.id]=r);
+        fbKnownTx = {}; DATA.transactions.forEach(t=>fbKnownTx[t.id]=t);
+        setSyncNote('🟢 เชื่อมต่อฐานข้อมูลออนไลน์แล้ว — ข้อมูลอัปเดตเรียลไทม์ทุกเครื่อง', false);
+        applySnapshot();
       }, ()=>{
         setSyncNote('🔴 เชื่อมต่อฐานข้อมูลไม่สำเร็จ — ตรวจสอบ FIREBASE_CONFIG / กติกาความปลอดภัยของ Realtime Database', true);
       });
       return;
     }catch(e){
-      setSyncNote('🔴 ตั้งค่า FIREBASE_CONFIG ไม่ถูกต้อง — ดู README.md', true);
+      setSyncNote('🔴 ตั้งค่า FIREBASE_CONFIG ไม่ถูกต้อง — ดูคู่มือ WMS_SETUP_GUIDE.docx', true);
     }
   }
+  if(SHEETS_API_URL){
+    sheetsMode = true;
+    setSyncNote('🟡 เชื่อมต่อ Google Sheet แล้ว (near real-time ~5 วิ) — กำลังซิงก์ข้อมูล...', true);
+    populateZoneSelect();
+    pollSheets(true);
+    if(sheetsPollTimer) clearInterval(sheetsPollTimer);
+    sheetsPollTimer = setInterval(()=>pollSheets(false), SHEETS_POLL_MS);
+    return;
+  }
   cloudMode = false;
-  setSyncNote('🟡 โหมดตัวอย่าง — ยังไม่เชื่อมต่อฐานข้อมูลออนไลน์ (ดูวิธีตั้งค่าใน README.md)', true);
+  setSyncNote('🟡 โหมดตัวอย่าง — ยังไม่เชื่อมต่อฐานข้อมูลออนไลน์ (ดูวิธีตั้งค่าในคู่มือ WMS_SETUP_GUIDE.docx)', true);
   loadLocalPreview();
+}
+async function pollSheets(isFirstLoad){
+  try{
+    const res = await fetch(SHEETS_API_URL, { method: 'GET' });
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    const val = await res.json();
+    if(sheetsSaving) return; // อย่าเผลอเขียนทับข้อมูลที่กำลังบันทึกอยู่
+    const next = val && (val.rolls || val.transactions || val.locations)
+      ? val : { rolls: [], transactions: [], locations: [] };
+    const sig = dataSig(next);
+    setSyncNote('🟡 เชื่อมต่อ Google Sheet แล้ว — ข้อมูลอัปเดตล่าสุดทุก ' + Math.round(SHEETS_POLL_MS/1000) + ' วินาที (ไม่ใช่เรียลไทม์แท้)', true);
+    if(sig===lastRenderedSig) return; // ข้อมูลไม่เปลี่ยน — ไม่ต้อง re-render ทับหน้าจอที่พนักงานกำลังใช้อยู่
+    lastRenderedSig = sig;
+    DATA = next;
+    renderAll();
+  }catch(e){
+    setSyncNote('🔴 ดึงข้อมูลจาก Google Sheet ไม่สำเร็จ — ตรวจสอบ SHEETS_API_URL และการ Deploy (Who has access: Anyone)', true);
+    if(isFirstLoad){ populateZoneSelect(); renderAll(); }
+  }
 }
 async function loadLocalPreview(){
   try{
@@ -543,8 +772,38 @@ async function loadLocalPreview(){
 }
 async function saveData(){
   if(cloudMode && fbRef){
-    try{ await fbRef.set(DATA); }
-    catch(e){ showToast('บันทึกขึ้นฐานข้อมูลออนไลน์ไม่สำเร็จ ลองอีกครั้ง', true); }
+    // เขียนเฉพาะระเบียนที่เปลี่ยนจริงแบบ multi-path update (atomic) แทนการ
+    // set() ทับทั้งต้นไม้ — เพื่อไม่ให้การบันทึกจากเครื่องนี้ไปลบ/ทับข้อมูล
+    // ม้วนอื่นที่เพิ่งถูกเครื่องอื่นบันทึกเข้ามาในช่วงเวลาเดียวกัน
+    const updates = {};
+    const curRolls = {}; DATA.rolls.forEach(r=>curRolls[r.id]=r);
+    const curTx = {}; DATA.transactions.forEach(t=>curTx[t.id]=t);
+    Object.keys(curRolls).forEach(id=>{ if(dataSig(curRolls[id])!==dataSig(fbKnownRolls[id])) updates['rolls/'+id] = curRolls[id]; });
+    Object.keys(fbKnownRolls).forEach(id=>{ if(!curRolls[id]) updates['rolls/'+id] = null; });
+    Object.keys(curTx).forEach(id=>{ if(!fbKnownTx[id]) updates['transactions/'+id] = curTx[id]; });
+    Object.keys(fbKnownTx).forEach(id=>{ if(!curTx[id]) updates['transactions/'+id] = null; });
+    if(Object.keys(updates).length===0) return;
+    try{
+      await fbRef.update(updates);
+      fbKnownRolls = curRolls; fbKnownTx = curTx;
+      lastRenderedSig = dataSig(DATA);
+    }catch(e){ showToast('บันทึกขึ้นฐานข้อมูลออนไลน์ไม่สำเร็จ ลองอีกครั้ง', true); }
+    return;
+  }
+  if(sheetsMode){
+    sheetsSaving = true;
+    try{
+      await fetch(SHEETS_API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // ใช้ text/plain เพื่อเลี่ยงปัญหา CORS preflight ของ Apps Script
+        body: JSON.stringify(DATA)
+      });
+      lastRenderedSig = dataSig(DATA);
+    }catch(e){
+      showToast('บันทึกขึ้น Google Sheet ไม่สำเร็จ ลองอีกครั้ง', true);
+    }finally{
+      sheetsSaving = false;
+    }
     return;
   }
   try{
@@ -553,6 +812,7 @@ async function saveData(){
     showToast('บันทึกไม่สำเร็จ ลองอีกครั้ง', true);
   }
 }
+
 
 /* ---------------- toast ---------------- */
 function showToast(msg, isErr){
@@ -581,13 +841,22 @@ function populateZoneSelect(){
   updateLocPreview();
 }
 function updateLocPreview(){
-  if(locOverride){ document.getElementById('r-loc-preview').textContent = locOverride; return; }
+  document.getElementById('loc-manual-box').classList.remove('field-invalid');
+  document.getElementById('loc-override-box').classList.remove('field-invalid');
+  if(locOverride){
+    document.getElementById('r-loc-preview').textContent = locOverride;
+    document.getElementById('r-loc-label').textContent = locLabel(locOverride);
+    return;
+  }
   const z = document.getElementById('r-zone').value || 'A';
-  const rack = String(document.getElementById('r-rack').value || 1).padStart(2,'0');
+  const rack = document.getElementById('r-rack').value || 1;
   const lvl = document.getElementById('r-level').value || 1;
-  document.getElementById('r-loc-preview').textContent = `${z}${rack}-${lvl}`;
+  const side = document.getElementById('r-side').value || 'L';
+  const code = locCode(z, rack, lvl, side);
+  document.getElementById('r-loc-preview').textContent = code;
+  document.getElementById('r-loc-label').textContent = locLabel(code);
 }
-/* try to decompose a scanned/typed location code into zone+rack+level;
+/* try to decompose a scanned/typed location code into zone+rack+level+side;
    if it doesn't match the standard pattern, fall back to a raw override */
 function applyLocScan(text){
   const raw = String(text).trim();
@@ -597,19 +866,18 @@ function applyLocScan(text){
     const loc = parsedObj.location || parsedObj.loc;
     if(loc) code = String(loc).trim();
     else if(parsedObj.zone){
-      const z = String(parsedObj.zone).trim().toUpperCase();
-      const rack = String(parsedObj.rack||1).padStart(2,'0');
-      const lvl = String(parsedObj.level||1);
-      code = `${z}${rack}-${lvl}`;
+      const side = String(parsedObj.side||'L').trim().toUpperCase().charAt(0);
+      code = locCode(parsedObj.zone, parsedObj.rack||1, parsedObj.level||1, side);
     }
   }
   code = code.toUpperCase();
-  const m = code.match(/^([A-Z])0*(\d{1,2})-(\d{1,2})$/);
-  if(m && ZONES.includes(m[1])){
+  const d = decomposeLocCode(code);
+  if(d && ZONES.includes(d.zone)){
     clearLocOverride(false);
-    document.getElementById('r-zone').value = m[1];
-    document.getElementById('r-rack').value = parseInt(m[2],10);
-    document.getElementById('r-level').value = parseInt(m[3],10);
+    document.getElementById('r-zone').value = d.zone;
+    document.getElementById('r-rack').value = d.rack;
+    document.getElementById('r-level').value = d.level;
+    document.getElementById('r-side').value = d.side;
     updateLocPreview();
     showToast(`สแกนตำแหน่งสำเร็จ → ${document.getElementById('r-loc-preview').textContent}`);
   }else{
@@ -627,55 +895,73 @@ function clearLocOverride(reRender){
   document.getElementById('loc-manual-box').style.display = 'block';
   if(reRender!==false) updateLocPreview();
 }
-['r-zone','r-rack','r-level'].forEach(id=>{
-  document.addEventListener('DOMContentLoaded', ()=>{
-    const el = document.getElementById(id);
-    if(el) el.addEventListener('input', updateLocPreview);
-    if(el) el.addEventListener('change', updateLocPreview);
-  });
-});
-
+function markInvalid(id, invalid){
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.classList.toggle('field-invalid', !!invalid);
+}
 function saveReceive(){
+  if(opInProgress){ showToast('กำลังบันทึกอยู่ กรุณารอสักครู่', true); return; }
   const product = document.getElementById('r-product').value.trim();
   const qty = parseFloat(document.getElementById('r-qty').value);
-  if(!product){ showToast('กรุณากรอกรหัสสินค้า', true); return; }
-  if(!qty || qty<=0){ showToast('กรุณากรอกน้ำหนักให้ถูกต้อง', true); return; }
+  const employee = document.getElementById('r-emp').value.trim();
+  const location = (document.getElementById('r-loc-preview').textContent || '').trim();
 
-  const location = document.getElementById('r-loc-preview').textContent;
+  // ---- validate required fields: product, weight, employee, location ----
+  const missing = [];
+  markInvalid('r-product', !product); if(!product) missing.push('รหัสสินค้า');
+  markInvalid('r-qty', !qty || qty<=0); if(!qty || qty<=0) missing.push('น้ำหนัก (กก.)');
+  markInvalid('r-emp', !employee); if(!employee) missing.push('ชื่อพนักงาน');
+  const locBox = document.getElementById(locOverride ? 'loc-override-box' : 'loc-manual-box');
+  const locInvalid = !location;
+  if(locBox) locBox.classList.toggle('field-invalid', locInvalid);
+  if(locInvalid) missing.push('โลเคชั่นจัดเก็บ');
+
+  if(missing.length>0){
+    showToast(`กรุณากรอกให้ครบ: ${missing.join(', ')}`, true);
+    return;
+  }
+
   const occupied = DATA.rolls.find(r=>r.location===location && r.status==='instock');
   if(occupied){
     if(!confirm(`ตำแหน่ง ${location} มีม้วนอยู่แล้ว (${occupied.product}) ต้องการเก็บซ้อนตำแหน่งเดิมหรือไม่?`)) return;
   }
+  opInProgress = true;
 
   const roll = {
     id: uid('roll'),
     tagId: document.getElementById('r-tagid').value.trim() || uid('TAG'),
     product,
+    productName: document.getElementById('r-product-name').value.trim() || lookupProductName(product) || '',
     batch: document.getElementById('r-batch').value.trim() || '-',
-    mc: document.getElementById('r-mc').value.trim(),
     qty, remainingQty: qty,
     desc: document.getElementById('r-desc').value.trim(),
     qa: document.getElementById('r-qa').value,
     receiptDate: document.getElementById('r-receipt').value || todayStr(),
     expDate: document.getElementById('r-exp').value,
-    employee: document.getElementById('r-emp').value.trim(),
+    employee,
     location,
     status: 'instock',
     createdAt: Date.now()
   };
   DATA.rolls.push(roll);
   logTx('receive', roll, qty, location);
-  saveData();
+  Promise.resolve(saveData()).finally(()=>{ opInProgress = false; });
   showToast(`รับเข้าเรียบร้อย → ${location}`);
   clearReceiveForm();
   renderAll();
 }
 function clearReceiveForm(){
-  ['r-tagid','r-batch','r-product','r-desc','r-mc','r-qty','r-emp','r-exp'].forEach(id=>document.getElementById(id).value='');
+  ['r-tagid','r-batch','r-product','r-desc','r-qty','r-emp','r-exp'].forEach(id=>document.getElementById(id).value='');
+  ['r-product','r-qty','r-emp'].forEach(id=>markInvalid(id, false));
+  document.getElementById('loc-override-box').classList.remove('field-invalid');
+  document.getElementById('loc-manual-box').classList.remove('field-invalid');
+  hideProductLookup();
   document.getElementById('r-qa').value='PASS';
   document.getElementById('r-receipt').value = todayStr();
   document.getElementById('r-rack').value = 1;
   document.getElementById('r-level').value = 1;
+  document.getElementById('r-side').value = 'L';
   document.getElementById('r-raw-scan').style.display = 'none';
   clearLocOverride();
 }
@@ -705,10 +991,11 @@ function rollCardHtml(r, showIssue){
     <div class="top">
       <div>
         <div class="pid mono">${r.product}</div>
-        <div class="meta">Batch: ${r.batch} · M/C: ${r.mc||'-'} · ${r.desc||''}</div>
+        ${r.productName ? `<div class="meta" style="color:var(--teal);">${r.productName}</div>` : ''}
+        <div class="meta">Batch: ${r.batch} · ${r.desc||''}</div>
         <div class="meta">น้ำหนักคงเหลือ: <b class="mono">${r.remainingQty}</b> กก. · รับเข้า ${fmtDate(r.receiptDate)} · หมดอายุ ${fmtDate(r.expDate)} ${expBadge}</div>
       </div>
-      <div class="loc mono">${r.location}</div>
+      <div class="loc mono" title="${locLabel(r.location)}">${r.location}</div>
     </div>
     ${showIssue ? `
     <div class="actions">
@@ -718,6 +1005,7 @@ function rollCardHtml(r, showIssue){
   </div>`;
 }
 function promptIssue(id){
+  if(opInProgress){ showToast('กำลังบันทึกอยู่ กรุณารอสักครู่', true); return; }
   const r = DATA.rolls.find(x=>x.id===id);
   if(!r) return;
   const amt = prompt(`จ่ายออกกี่กิโลกรัม? (คงเหลือ ${r.remainingQty} กก.)`, r.remainingQty);
@@ -725,10 +1013,11 @@ function promptIssue(id){
   const val = parseFloat(amt);
   if(!val || val<=0 || val>r.remainingQty){ showToast('จำนวนไม่ถูกต้อง', true); return; }
   const emp = prompt('ชื่อพนักงานผู้จ่าย', '') || '';
+  opInProgress = true;
   r.remainingQty = +(r.remainingQty - val).toFixed(2);
   logTx('issue', r, val, r.location, emp);
   if(r.remainingQty<=0){ r.status='issued'; r.location=''; }
-  saveData();
+  Promise.resolve(saveData()).finally(()=>{ opInProgress = false; });
   showToast('จ่ายออกเรียบร้อย');
   renderAll();
 }
@@ -740,8 +1029,8 @@ function promptMove(id){
   document.getElementById('move-body').innerHTML = `
     <h3>ย้ายโลเคชั่น</h3>
     <div class="meta" style="margin-bottom:4px;">${r.product} <span style="color:var(--dim);">· ${r.batch}</span></div>
-    <div class="loc-override" style="background:rgba(242,169,59,.08);border-color:rgba(242,169,59,.35);margin-bottom:14px;">
-      <div>ตำแหน่งปัจจุบัน: <span class="val mono" style="color:var(--amber);">${r.location||'-'}</span></div>
+    <div class="loc-override" style="background:rgba(37,99,235,.08);border-color:rgba(37,99,235,.35);margin-bottom:14px;">
+      <div>ตำแหน่งปัจจุบัน: <span class="val mono" style="color:var(--primary);">${r.location||'-'}</span><div class="hint" style="margin-top:2px;">${r.location ? locLabel(r.location) : ''}</div></div>
     </div>
     <button class="loc-scan-btn" onclick="openScanner('move')">📷 สแกน QR / Barcode ป้ายโลเคชั่นใหม่</button>
     <div id="mv-override-box" class="loc-override" style="display:none;">
@@ -749,13 +1038,22 @@ function promptMove(id){
       <button onclick="clearMoveOverride()">✕ ล้าง / เลือกเอง</button>
     </div>
     <div id="mv-manual-box">
-      <div class="row3">
+      <div class="row4">
         <div><label>โซน</label><select id="mv-zone"></select></div>
         <div><label>แร็ค</label><input id="mv-rack" type="number" min="1" max="30" value="1"></div>
         <div><label>ชั้น</label><input id="mv-level" type="number" min="1" max="6" value="1"></div>
+        <div><label>ด้าน (ซ้าย/ขวา)</label>
+          <select id="mv-side">
+            <option value="L">ซ้าย (L)</option>
+            <option value="R">ขวา (R)</option>
+          </select>
+        </div>
       </div>
     </div>
-    <div class="hint">ตำแหน่งใหม่: <span class="mono" id="mv-loc-preview">A01-1</span></div>
+    <div class="loc-preview-box">
+      <div class="code mono" id="mv-loc-preview">A01-01L</div>
+      <div class="label" id="mv-loc-label">โซน A · แร็ค 01 · ชั้น 01 · ด้าน ซ้าย (L)</div>
+    </div>
     <div class="divider"></div>
     <div class="row2">
       <button class="btn btn-outline" onclick="closeMoveModal()">ยกเลิก</button>
@@ -764,13 +1062,14 @@ function promptMove(id){
   `;
   const sel = document.getElementById('mv-zone');
   sel.innerHTML = ZONES.map(z=>`<option value="${z}">โซน ${z}</option>`).join('');
-  const m = (r.location||'').toUpperCase().match(/^([A-Z])0*(\d{1,2})-(\d{1,2})$/);
-  if(m && ZONES.includes(m[1])){
-    sel.value = m[1];
-    document.getElementById('mv-rack').value = parseInt(m[2],10);
-    document.getElementById('mv-level').value = parseInt(m[3],10);
+  const d = decomposeLocCode(r.location);
+  if(d && ZONES.includes(d.zone)){
+    sel.value = d.zone;
+    document.getElementById('mv-rack').value = d.rack;
+    document.getElementById('mv-level').value = d.level;
+    document.getElementById('mv-side').value = d.side;
   }
-  ['mv-zone','mv-rack','mv-level'].forEach(fid=>{
+  ['mv-zone','mv-rack','mv-level','mv-side'].forEach(fid=>{
     document.getElementById(fid).addEventListener('input', updateMoveLocPreview);
     document.getElementById(fid).addEventListener('change', updateMoveLocPreview);
   });
@@ -778,11 +1077,18 @@ function promptMove(id){
   document.getElementById('move-modal').classList.remove('hidden');
 }
 function updateMoveLocPreview(){
-  if(moveOverride){ document.getElementById('mv-loc-preview').textContent = moveOverride; return; }
+  if(moveOverride){
+    document.getElementById('mv-loc-preview').textContent = moveOverride;
+    document.getElementById('mv-loc-label').textContent = locLabel(moveOverride);
+    return;
+  }
   const z = document.getElementById('mv-zone').value || 'A';
-  const rack = String(document.getElementById('mv-rack').value || 1).padStart(2,'0');
+  const rack = document.getElementById('mv-rack').value || 1;
   const lvl = document.getElementById('mv-level').value || 1;
-  document.getElementById('mv-loc-preview').textContent = `${z}${rack}-${lvl}`;
+  const side = document.getElementById('mv-side').value || 'L';
+  const code = locCode(z, rack, lvl, side);
+  document.getElementById('mv-loc-preview').textContent = code;
+  document.getElementById('mv-loc-label').textContent = locLabel(code);
 }
 function applyMoveScan(text){
   const raw = String(text).trim();
@@ -792,19 +1098,18 @@ function applyMoveScan(text){
     const loc = parsedObj.location || parsedObj.loc;
     if(loc) code = String(loc).trim();
     else if(parsedObj.zone){
-      const z = String(parsedObj.zone).trim().toUpperCase();
-      const rack = String(parsedObj.rack||1).padStart(2,'0');
-      const lvl = String(parsedObj.level||1);
-      code = `${z}${rack}-${lvl}`;
+      const side = String(parsedObj.side||'L').trim().toUpperCase().charAt(0);
+      code = locCode(parsedObj.zone, parsedObj.rack||1, parsedObj.level||1, side);
     }
   }
   code = code.toUpperCase();
-  const m = code.match(/^([A-Z])0*(\d{1,2})-(\d{1,2})$/);
-  if(m && ZONES.includes(m[1])){
+  const d = decomposeLocCode(code);
+  if(d && ZONES.includes(d.zone)){
     clearMoveOverride(false);
-    document.getElementById('mv-zone').value = m[1];
-    document.getElementById('mv-rack').value = parseInt(m[2],10);
-    document.getElementById('mv-level').value = parseInt(m[3],10);
+    document.getElementById('mv-zone').value = d.zone;
+    document.getElementById('mv-rack').value = d.rack;
+    document.getElementById('mv-level').value = d.level;
+    document.getElementById('mv-side').value = d.side;
     updateMoveLocPreview();
     showToast(`สแกนตำแหน่งสำเร็จ → ${document.getElementById('mv-loc-preview').textContent}`);
   }else{
@@ -825,16 +1130,18 @@ function clearMoveOverride(reRender){
   if(reRender!==false) updateMoveLocPreview();
 }
 function confirmMove(){
+  if(opInProgress){ showToast('กำลังบันทึกอยู่ กรุณารอสักครู่', true); return; }
   const r = DATA.rolls.find(x=>x.id===moveTargetId);
   if(!r) return;
   const target = document.getElementById('mv-loc-preview').textContent.trim().toUpperCase();
   if(!target){ showToast('กรุณาระบุตำแหน่งใหม่', true); return; }
   const occupied = DATA.rolls.find(x=>x.id!==r.id && x.location===target && x.status==='instock');
   if(occupied && !confirm(`ตำแหน่ง ${target} มีของอยู่แล้ว ต้องการย้ายไปซ้อนหรือไม่?`)) return;
+  opInProgress = true;
   const oldLoc = r.location;
   r.location = target;
   logTx('move', r, r.remainingQty, target, '', oldLoc);
-  saveData();
+  Promise.resolve(saveData()).finally(()=>{ opInProgress = false; });
   showToast(`ย้ายจาก ${oldLoc} → ${target}`);
   closeMoveModal();
   renderAll();
@@ -870,18 +1177,22 @@ function renderZoneGrid(){
   let html = '';
   for(let rack=1; rack<=RACKS; rack++){
     for(let lvl=1; lvl<=LEVELS; lvl++){
-      const code = `${currentZone}${String(rack).padStart(2,'0')}-${lvl}`;
-      const roll = DATA.rolls.find(r=>r.location===code && r.status==='instock');
-      let cls = 'cell', label = code.split('-')[0].slice(1)+'·'+lvl;
-      if(roll){
-        const d = daysUntil(roll.expDate);
-        if(d!==null && d<0) cls += ' expired';
-        else if(d!==null && d<=14) cls += ' expiring';
-        else cls += ' occupied';
-        html += `<div class="${cls}" title="${code}" onclick="showLocDetail('${code}')">${label}</div>`;
-      }else{
-        html += `<div class="${cls}" title="${code}">${label}</div>`;
-      }
+      html += '<div class="cell-pair">';
+      SIDES.forEach(side=>{
+        const code = locCode(currentZone, rack, lvl, side);
+        const roll = DATA.rolls.find(r=>r.location===code && r.status==='instock');
+        let cls = 'cell', label = `${pad2(rack)}-${pad2(lvl)}${side}`;
+        if(roll){
+          const d = daysUntil(roll.expDate);
+          if(d!==null && d<0) cls += ' expired';
+          else if(d!==null && d<=14) cls += ' expiring';
+          else cls += ' occupied';
+          html += `<div class="${cls}" title="${code} — ${locLabel(code)}" onclick="showLocDetail('${code}')">${label}</div>`;
+        }else{
+          html += `<div class="${cls}" title="${code} — ${locLabel(code)}">${label}</div>`;
+        }
+      });
+      html += '</div>';
     }
   }
   el.innerHTML = html;
@@ -891,6 +1202,7 @@ function showLocDetail(code){
   if(!r) return;
   document.getElementById('detail-body').innerHTML = `
     <h3>ตำแหน่ง ${code}</h3>
+    <div class="hint" style="margin-top:-8px;margin-bottom:10px;">${locLabel(code)}</div>
     ${rollCardHtml(r, true)}
     <button class="btn btn-outline" style="margin-top:10px;" onclick="closeDetail()">ปิด</button>
   `;
@@ -1021,7 +1333,6 @@ const FIELD_KEY_MAP = {
   tagid:'r-tagid', tag_id:'r-tagid', tagid_no:'r-tagid', tagno:'r-tagid', tag_no:'r-tagid', id:'r-tagid', partid:'r-tagid', part_id:'r-tagid', labelno:'r-tagid', serial:'r-tagid', serialno:'r-tagid',
   product:'r-product', productcode:'r-product', product_code:'r-product', partno:'r-product', part_no:'r-product', partnumber:'r-product', itemcode:'r-product', item_code:'r-product', material:'r-product', materialcode:'r-product', sku:'r-product',
   batch:'r-batch', batchno:'r-batch', batch_no:'r-batch', lot:'r-batch', lotno:'r-batch', lot_no:'r-batch', lotnumber:'r-batch',
-  mc:'r-mc', machine:'r-mc', machineno:'r-mc', machine_no:'r-mc', line:'r-mc', lineno:'r-mc',
   qty:'r-qty', quantity:'r-qty', weight:'r-qty', net_weight:'r-qty', netweight:'r-qty', netwt:'r-qty', grossweight:'r-qty', kg:'r-qty',
   desc:'r-desc', description:'r-desc', partname:'r-desc', productname:'r-desc', itemname:'r-desc', itemdesc:'r-desc',
   qa:'r-qa', qc:'r-qa', qastatus:'r-qa', qcstatus:'r-qa', inspectionresult:'r-qa', result:'r-qa',
@@ -1053,6 +1364,7 @@ function handleScanResult(text){
       const n = autofillFromObject(parsed);
       document.getElementById('r-tagid').value = parsed.tagId || parsed.id || parsed.tagid || text;
       updateLocPreview();
+      onProductCodeInput();
       showToast(n>0 ? `สแกนสำเร็จ — เติมข้อมูลอัตโนมัติ ${n} ช่อง` : 'สแกนสำเร็จ — ไม่พบรูปแบบที่รู้จัก กรุณาตรวจสอบข้อมูลดิบด้านล่าง');
     }else{
       document.getElementById('r-tagid').value = text;
@@ -1110,7 +1422,7 @@ function adminFilteredSorted(){
   let list = DATA.rolls.filter(r=>{
     if(adminStatusFilter!=='all' && r.status!==adminStatusFilter) return false;
     if(!q) return true;
-    return [r.product,r.batch,r.location,r.tagId,r.desc,r.employee,r.mc].join(' ').toLowerCase().includes(q);
+    return [r.product,r.batch,r.location,r.tagId,r.desc,r.employee].join(' ').toLowerCase().includes(q);
   });
   const sortMode = document.getElementById('admin-sort').value;
   if(sortMode==='loc') list.sort((a,b)=>(a.location||'').localeCompare(b.location||''));
@@ -1153,7 +1465,8 @@ function adminRowHtml(r){
       <div>
         <span class="badge ${scls}">${slab}</span>
         <div class="pid mono" style="margin-top:5px;">${r.product} <span style="color:var(--dim);font-weight:400;">· ${r.batch}</span></div>
-        <div class="meta">Tag: ${r.tagId} · ตำแหน่ง: ${r.location||'-'} · ${r.remainingQty}/${r.qty} กก.</div>
+        ${r.productName ? `<div class="meta" style="color:var(--teal);">${r.productName}</div>` : ''}
+        <div class="meta" title="${r.location ? locLabel(r.location) : ''}">Tag: ${r.tagId} · ตำแหน่ง: ${r.location||'-'} · ${r.remainingQty}/${r.qty} กก.</div>
         <div class="meta">รับเข้า ${fmtDate(r.receiptDate)} · หมดอายุ ${fmtDate(r.expDate)} · โดย ${r.employee||'-'}</div>
       </div>
     </div>
@@ -1173,13 +1486,12 @@ function openEditRoll(id){
       <div><label>Batch No</label><input id="e-batch" class="mono" value="${r.batch||''}"></div>
     </div>
     <label>รหัสสินค้า (Product)</label>
-    <input id="e-product" class="mono" value="${r.product||''}">
+    <input id="e-product" class="mono" value="${r.product||''}" oninput="onEditProductCodeInput()">
+    <div id="e-product-lookup" class="product-lookup ${r.productName?'found':''}" style="display:${r.productName?'flex':'none'};">${r.productName ? '✅ '+r.productName : ''}</div>
     <label>รายละเอียด</label>
     <input id="e-desc" value="${r.desc||''}">
-    <div class="field-grid">
-      <div><label>M/C</label><input id="e-mc" class="mono" value="${r.mc||''}"></div>
-      <div><label>QA</label><select id="e-qa"><option value="PASS" ${r.qa==='PASS'?'selected':''}>PASS</option><option value="FAIL" ${r.qa==='FAIL'?'selected':''}>FAIL</option></select></div>
-    </div>
+    <label>QA</label>
+    <select id="e-qa"><option value="PASS" ${r.qa==='PASS'?'selected':''}>PASS</option><option value="FAIL" ${r.qa==='FAIL'?'selected':''}>FAIL</option></select>
     <div class="field-grid">
       <div><label>น้ำหนักรวม (กก.)</label><input id="e-qty" type="number" min="0" step="0.01" value="${r.qty}"></div>
       <div><label>น้ำหนักคงเหลือ (กก.)</label><input id="e-remaining" type="number" min="0" step="0.01" value="${r.remainingQty}"></div>
@@ -1205,30 +1517,46 @@ function openEditRoll(id){
   `;
   document.getElementById('edit-modal').classList.remove('hidden');
 }
+function onEditProductCodeInput(){
+  const code = document.getElementById('e-product').value.trim();
+  const el = document.getElementById('e-product-lookup');
+  if(!code){ el.style.display='none'; return; }
+  const name = lookupProductName(code);
+  if(name){ el.className='product-lookup found'; el.style.display='flex'; el.textContent='✅ '+name; }
+  else{ el.className='product-lookup notfound'; el.style.display='flex'; el.textContent='⚠️ ไม่พบรหัสนี้ในฐานข้อมูลสินค้า'; }
+}
 function saveEditRoll(id){
+  if(opInProgress){ showToast('กำลังบันทึกอยู่ กรุณารอสักครู่', true); return; }
   const r = DATA.rolls.find(x=>x.id===id);
   if(!r) return;
   const product = document.getElementById('e-product').value.trim();
   const qty = parseFloat(document.getElementById('e-qty').value);
   const remaining = parseFloat(document.getElementById('e-remaining').value);
-  if(!product){ showToast('กรุณากรอกรหัสสินค้า', true); return; }
-  if(isNaN(qty) || qty<0 || isNaN(remaining) || remaining<0){ showToast('น้ำหนักไม่ถูกต้อง', true); return; }
+  const employee = document.getElementById('e-emp').value.trim();
+  const location = document.getElementById('e-location').value.trim().toUpperCase();
+  const missing = [];
+  if(!product) missing.push('รหัสสินค้า');
+  if(isNaN(qty) || qty<0 || isNaN(remaining) || remaining<0) missing.push('น้ำหนัก');
+  if(!employee) missing.push('ชื่อพนักงาน');
+  if(!location) missing.push('โลเคชั่นจัดเก็บ');
+  if(missing.length>0){ showToast(`กรุณากรอกให้ครบ: ${missing.join(', ')}`, true); return; }
+  opInProgress = true;
   Object.assign(r, {
     tagId: document.getElementById('e-tagid').value.trim() || r.tagId,
     batch: document.getElementById('e-batch').value.trim() || '-',
     product,
+    productName: lookupProductName(product) || r.productName || '',
     desc: document.getElementById('e-desc').value.trim(),
-    mc: document.getElementById('e-mc').value.trim(),
     qa: document.getElementById('e-qa').value,
     qty, remainingQty: remaining,
     receiptDate: document.getElementById('e-receipt').value,
     expDate: document.getElementById('e-exp').value,
-    employee: document.getElementById('e-emp').value.trim(),
-    location: document.getElementById('e-location').value.trim().toUpperCase(),
+    employee,
+    location,
     status: document.getElementById('e-status').value
   });
   logTx('edit', r, r.remainingQty, r.location, 'เจ้าหน้าที่ควบคุม');
-  saveData();
+  Promise.resolve(saveData()).finally(()=>{ opInProgress = false; });
   showToast('บันทึกการแก้ไขเรียบร้อย');
   closeEditModal();
   renderAll();
@@ -1254,10 +1582,19 @@ function renderAll(){
 }
 
 /* init */
-document.getElementById('r-zone').addEventListener?.('change', updateLocPreview);
-document.getElementById('r-rack').addEventListener('input', updateLocPreview);
-document.getElementById('r-level').addEventListener('input', updateLocPreview);
-document.getElementById('r-zone').addEventListener('change', updateLocPreview);
+['r-zone','r-rack','r-level','r-side'].forEach(id=>{
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.addEventListener('input', updateLocPreview);
+  el.addEventListener('change', updateLocPreview);
+});
+document.getElementById('i-search').addEventListener('input', debounce(renderIssueList, 200));
+document.getElementById('inv-search').addEventListener('input', debounce(renderInventoryList, 200));
+document.getElementById('admin-search').addEventListener('input', debounce(()=>renderAdmin(true), 200));
+document.getElementById('r-product').addEventListener('input', debounce(onProductCodeInput, 250));
+document.getElementById('r-qty').addEventListener('input', ()=>markInvalid('r-qty', false));
+document.getElementById('r-emp').addEventListener('input', ()=>markInvalid('r-emp', false));
+loadProductLookup(); // เริ่มโหลดฐานข้อมูลรหัส→ชื่อสินค้าไว้ล่วงหน้าเบื้องหลัง (ไม่บล็อกหน้าจอ)
 initStorage();
 </script>
 </body>
